@@ -1,6 +1,10 @@
 <script>
-    import Modal from "$lib/Modal.svelte";
-    import { page } from "$app/stores";
+    import { showModal } from "$lib/js/showModal"
+    import { page } from "$app/stores"
+    /**
+     * @type any}
+     */
+    export let user
 </script>
 <style>
     nav{
@@ -75,7 +79,7 @@
     }
 }
 </style>
-<Modal />
+
 <nav>
     <div class="nav_container">
         <ul class="menu">
@@ -86,7 +90,7 @@
         <ul class="menu right">
             <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""}>contact</a></li>
             <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""}>videos</a></li>
-            <div class="profile">P</div>
+            <div class="profile" on:click={showModal} on:keydown={showModal}>{user ? user.firstName.charAt(0) : "G"}</div>
         </ul>
     </div>
 </nav>

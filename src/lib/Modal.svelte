@@ -1,17 +1,23 @@
 <script>
-    import { PUBLIC_HOST } from "$env/static/public";
-    import Button from "$lib/Button.svelte";
+    import { PUBLIC_HOST } from "$env/static/public"
+    import Button from "$lib/Button.svelte"
+    import { Modal } from "$lib/js/modalStore"
+    import { hideModal } from "$lib/js/showModal";
 
-    let showModal = true
-    let session = false
+     export let user
     /**
      * @type {boolean}
      */
-    let showLogin =  false
+    let modal
+    Modal.subscribe((value) =>  { modal = value })
     /**
      * @type {boolean}
      */
-    let showRegister = true
+    let showLogin = user ? !user.authenticated : true
+    /**
+     * @type {boolean}
+     */
+    $:showRegister = ( user ? !user.authenticated : true) && !showLogin
     /**
      * @type {boolean}
      */
@@ -40,7 +46,7 @@
      * @type {boolean}
      */
     let registerSuccess
-    const hideModal = () => showModal = false
+
    async function createUser(){
         let form = {
             email: registerEmail,
@@ -58,6 +64,11 @@
         const message = await reply.json()
         registerSuccess = message.success
         registerReplies = message.replies
+
+        if(registerSuccess) hideModal()
+   }
+   function switchView(){
+    showLogin = !showLogin
    }
 </script>
 <style>
@@ -102,10 +113,19 @@
     h3{
         margin: 8px;
     }
+    .switch{
+        color: var(--color_purple_main);
+        cursor: pointer;
+        font-style: italic;
+        text-transform: lowercase;
+    }
+    .switch:hover{
+        text-decoration: line-through;
+    }
 </style>
-<div class="backdrop" style={ showModal ? "" : "display: none;" } on:click={hideModal} on:keydown={hideModal}>
+<div class="backdrop" style={ modal ? "" : "display: none;" } on:click={hideModal} on:keydown={hideModal}>
 </div>
-<div class="modal" style={ showModal ? "" : "display: none;" }>
+<div class="modal" style={ modal ? "" : "display: none;" }>
     <div class="login {showLogin ? "show" : ""}" style={ showLogin ? "" : "display: none;" }>
         <h3>Login</h3>
         <form name="login">
@@ -113,7 +133,7 @@
             <input name="password" type="password" placeholder="password"/>
             <Button title="login" style="cta" />
         </form>
-        <p>Register Instead</p>
+        <p class="switch" on:click={switchView} on:keydown={switchView}>Register Instead</p>
     </div>
     <div class="register {showRegister ? "show" : ""}" style={ showRegister ? "" : "display: none;" }>
         <h3>Register</h3>
@@ -131,7 +151,7 @@
             {/if}
             <Button title="register" style="cta" />
         </form>
-        <p>Login Instead</p>
+        <p class="switch" on:click={switchView} on:keydown={switchView}>Login Instead</p>
     </div>
     <div class="checkout {showBuy ? "show" : ""}" style={ showBuy ? "" : "display: none;" }>
         buy this

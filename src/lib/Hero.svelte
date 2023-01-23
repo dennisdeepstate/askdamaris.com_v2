@@ -1,6 +1,7 @@
 <script>
     import Button from "$lib/Button.svelte"
     import VideoRoll from "$lib/VideoRoll.svelte"
+    import { showModal } from "$lib/js/showModal"
     /**
      * @type {{ videos: []; name: string; price: number; }}
      */
@@ -37,7 +38,7 @@
     <div class="hero_text">
         <h2>this is your opportunity for self actualisation</h2>
         <p>ask damaris is a platform that gives individuals an opportunity for self-actualisation and also supports businesses in their operations to achieve their desired outcomes. We offer one on one consultation sessions, training and workshops for teams and business process outsourcing.</p>
-        <Button style="cta" title="reach for the stars" />
+        <Button style="cta" title="reach for the stars" on:modal={showModal}/>
     </div>
     <div class="roll">
         <VideoRoll videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>

@@ -1,6 +1,15 @@
 <script>
+    import { createEventDispatcher } from "svelte"
+
     export let style = 'cta'
     export let title = 'buy now'
+
+
+	const dispatch = createEventDispatcher()
+
+	function dispatchModal() {
+		dispatch('modal')
+	}
 </script>
 <style>
     .cta{
@@ -13,4 +22,4 @@
         color: var(--color_purple_main);
     }
 </style>
-<button class="{style}">{title}</button>
+<button class="{style}" on:click={dispatchModal}>{title}</button>
