@@ -127,22 +127,38 @@ section > h2{
 }
 @-webkit-keyframes appear_x {
   0% {
-    transform: translateX(120px);
-    opacity: 0;
-  }
-  100% {
-    margin-top: translateX(0px);
-    opacity: 1;
-  }
-}
-@keyframes appear_x {
-  0% {
-    transform: translateX(120px);
+    transform: translateY(-120px);
     opacity: 0;
   }
   100% {
     margin-top: translateY(0px);
     opacity: 1;
+  }
+}
+@keyframes appear_x {
+  0% {
+    transform: translateY(-120px);
+    opacity: 0;
+  }
+  100% {
+    margin-top: translateY(0px);
+    opacity: 1;
+  }
+}
+@-webkit-keyframes grow {
+  0% {
+    transform: scaleY(1.5);
+  }
+  100% {
+    margin-top: scaleY(1);
+  }
+}
+@keyframes grow {
+  0% {
+    transform: scaleY(1.5);
+  }
+  100% {
+    margin-top: scaleY(1);
   }
 }
 @media only screen and (max-width: 900px){

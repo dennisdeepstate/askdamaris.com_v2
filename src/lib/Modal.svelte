@@ -85,11 +85,10 @@
     .modal{
         background-color: var(--color_white);
         border-radius: var(--border_radius);
-        margin: 120px calc( calc( 100vw - 400px ) / 2 );
-        padding: 8px;
+        margin: 8vh calc( calc( 100vw - 400px ) / 2 );
+        padding: 12px;
         position: fixed;
-        height: 420px;
-        overflow-y: scroll;
+        overflow: hidden;
         text-align: center;
         width: 400px;
         z-index: 14;

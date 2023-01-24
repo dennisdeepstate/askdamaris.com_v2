@@ -21,7 +21,7 @@
     .nav_container{
         align-items: center;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 3fr 1fr;
         height: 100%;
         justify-items: center;
         max-width: 1280px;
@@ -29,15 +29,12 @@
         width: 100%;
     }
     ul{
+        margin: 0;
         position: relative;
     }
     ul > li{
         display: inline-block;
-        margin: 0 0 0 20px;
-    }
-    .right > li{
-        margin-left: 0;
-        margin-right: 20px;
+        margin: 0 30px;
     }
     ul > li > a {
         color: var(--color_blackish);
@@ -47,50 +44,51 @@
         color: var(--color_purple_main);
         text-decoration: line-through;
     }
-    h2{
-        color: var(--blackish);
-        font-weight: 400;
-    }
     .profile{
-        align-items: center;
         background-color: var(--color_purple_main);
         border-radius: 50%;
         box-sizing: border-box;
         color: var(--color_white);
         cursor: pointer;
-        display: grid;
         height: 30px;
-        margin: 0;
+        line-height: 30px;
         padding: 0;
-        position: absolute;
-        right: -24px;
         text-align: center;
-        top: -4px;
         width: 30px;
     }
 @media only screen and (max-width: 600px){
-    .menu{
-        display: none;
+    ul{
+        background-color: var(--color_white);
+        height: 100vh;
+        position: absolute;
+        right: 0;
+        top: 0;
+        /* transform: translateX(240px); */
+        width: 240px;
+    }
+    ul > li{
+        display: block;
     }
 }
 @media only screen and (max-width: 900px){
-    .nav_container{
-        grid-template-columns: 4fr 3fr 4fr;
+    ul > li{
+        margin: 0 15px;
     }
 }
 </style>
 
 <nav>
     <div class="nav_container">
-        <ul class="menu">
-            <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""}>home</a></li>
-            <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""}>about</a></li>
-        </ul>
-        <h2>ask damaris</h2>
-        <ul class="menu right">
-            <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""}>contact</a></li>
-            <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""}>videos</a></li>
-            <div class="profile" on:click={showModal} on:keydown={showModal}>{user ? user.firstName.charAt(0) : "G"}</div>
-        </ul>
+        <img src="#" alt="logo"/>
+        <div class="menu">
+            <ul>
+                <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""}>home</a></li>
+                <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""}>about</a></li>
+                <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""}>contact</a></li>
+                <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""}>videos</a></li>
+                
+            </ul>
+        </div>
+        <div class="profile" on:click={showModal} on:keydown={showModal}>{user ? user.firstName.charAt(0) : "G"}</div>
     </div>
 </nav>
