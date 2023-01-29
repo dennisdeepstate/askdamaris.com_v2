@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 :root {
   --gradient: linear-gradient(90deg, rgba(90,24,154,1) 0%, rgba(178,76,71,1) 70%, rgba(255,121,0,1) 100%);
+  --color_error_main: rgb(255, 60, 0);
+  --color_error_secondary: rgba(255, 60, 0, 0.3);
+  --color_success_main: rgb(24, 154, 126);
+  --color_success_secondary: rgba(24, 154, 126, 0.3);
   --color_orange_main: rgba(255,121,0,1);
-  --color_orange_lite: rgba(255,121,0,0.4);
+  --color_orange_lite: rgba(255,121,0,0.3);
   --color_white: rgba(255, 255, 255, 1);
   --color_white_translucent: rgba(255, 255, 255, 0.9);
   --color_offwhite: rgba(247, 244, 249, 1);

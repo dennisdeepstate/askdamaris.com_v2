@@ -3,8 +3,11 @@
     import Button from "$lib/Button.svelte"
     import { Modal } from "$lib/js/modalStore"
     import { hideModal } from "$lib/js/showModal";
-
-     export let user
+    import { page } from "$app/stores"
+    /**
+     * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
+     */
+    let user = $page.data.user
     /**
      * @type {boolean}
      */
@@ -13,15 +16,15 @@
     /**
      * @type {boolean}
      */
-    let showLogin = user ? !user.authenticated : true
+    $:showLogin = !user.authenticated
     /**
      * @type {boolean}
      */
-    $:showRegister = ( user ? !user.authenticated : true) && !showLogin
+    $:showRegister = !user.authenticated && !showLogin
     /**
      * @type {boolean}
      */
-    let showBuy = false
+    let showProfile = user.authenticated
     /**
      * @type {string}
      */
@@ -39,13 +42,29 @@
      */
     let lastName
     /**
-     * @type {string | any[]}
+     * @type {string[]}
      */
     let registerReplies = []
     /**
      * @type {boolean}
      */
     let registerSuccess
+    /**
+     * @type {string}
+     */
+     let loginEmail
+    /**
+     * @type {string}
+     */
+    let loginPassword
+    /**
+     * @type {string[]}
+     */
+    let loginReplies = []
+    /**
+     * @type {boolean}
+     */
+    let loginSuccess
 
    async function createUser(){
         let form = {
@@ -65,7 +84,31 @@
         registerSuccess = message.success
         registerReplies = message.replies
 
-        if(registerSuccess) hideModal()
+        if(registerSuccess) {
+            hideModal()
+            window.location.href = `${PUBLIC_HOST}/videos`
+        }
+   }
+   async function login(){
+        let form = {
+            email: loginEmail,
+            password: loginPassword
+        }
+        const reply = await fetch(`${PUBLIC_HOST}/user/login`,{ 
+            method: 'POST',
+            body: JSON.stringify(form),
+            headers:{
+                'content-type': 'application/json'
+            }
+        })
+        const message = await reply.json()
+        loginSuccess = message.success
+        loginReplies = message.replies
+
+        if(loginSuccess) {
+            hideModal()
+            window.location.href = `${PUBLIC_HOST}/videos`
+        }
    }
    function switchView(){
     showLogin = !showLogin
@@ -85,10 +128,11 @@
     .modal{
         background-color: var(--color_white);
         border-radius: var(--border_radius);
-        margin: 8vh calc( calc( 100vw - 400px ) / 2 );
+        margin: 2vh calc( calc( 100vw - 400px ) / 2 );
+        max-height: 70vh;
         padding: 12px;
         position: fixed;
-        overflow: hidden;
+        overflow-y: scroll;
         text-align: center;
         width: 400px;
         z-index: 14;
@@ -121,15 +165,42 @@
     .switch:hover{
         text-decoration: line-through;
     }
+    .reply{
+        border-radius: var(--border_radius);
+        box-sizing: border-box;
+        margin: 12px auto;
+        padding: 8px;
+        text-align: left;
+        width: 90%;
+    }
+    .reply.success{
+        background-color: var(--color_success_secondary);
+        border: 1px solid var(--color_success_main);
+        color: var(--color_success_main);
+    }
+    .reply.error{
+        background-color: var(--color_error_secondary);
+        border: 1px solid var(--color_error_main);
+        color: var(--color_error_main);
+    }
 </style>
 <div class="backdrop" style={ modal ? "" : "display: none;" } on:click={hideModal} on:keydown={hideModal}>
 </div>
 <div class="modal" style={ modal ? "" : "display: none;" }>
     <div class="login {showLogin ? "show" : ""}" style={ showLogin ? "" : "display: none;" }>
         <h3>Login</h3>
-        <form name="login">
-            <input name="email" type="email" placeholder="email"/>
-            <input name="password" type="password" placeholder="password"/>
+        <form name="login" on:submit|preventDefault={login}>
+            <input name="email" type="email" placeholder="email" bind:value={loginEmail}/>
+            <input name="password" type="password" placeholder="password" bind:value={loginPassword}/>
+            {#if loginReplies.length > 0}
+            <div class="reply { loginSuccess ? "success" : "error"}">
+                <ul>
+                    {#each loginReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
+            </div>
+            {/if}
             <Button title="login" style="cta" />
         </form>
         <p class="switch" on:click={switchView} on:keydown={switchView}>Register Instead</p>
@@ -143,20 +214,19 @@
             <input name="password" type="text" placeholder="password" bind:value={registerPassword} required/>
             {#if registerReplies.length > 0}
             <div class="reply { registerSuccess ? "success" : "error"}">
-                {#each registerReplies as reply}
-                    <p>{ reply }</p>
-                {/each}
+                <ul>
+                    {#each registerReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
             </div>
             {/if}
             <Button title="register" style="cta" />
         </form>
         <p class="switch" on:click={switchView} on:keydown={switchView}>Login Instead</p>
     </div>
-    <div class="checkout {showBuy ? "show" : ""}" style={ showBuy ? "" : "display: none;" }>
-        buy this
-        <form name="register">
-            <input name="phone" type="phone" placeholder="phone"/>
-            <Button title="Send" style="cta" />
-        </form>
+    <div class="profile {showProfile ? "show" : ""}" style={ showProfile ? "" : "display: none;" }>
+        <h3>{ user.firstName } { user.lastName }</h3>
+        <a href="{PUBLIC_HOST}/user/logout">logout</a>
     </div>
 </div>

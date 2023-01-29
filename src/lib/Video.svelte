@@ -43,7 +43,7 @@
         text-align: center;
         width: 100%;
     }
-    .selected, .video_container:hover{
+    .selected{
         box-shadow: var(--shadow_orange);
         transform: scale(1.15) translateY(-20px);
         transition: transform 200ms ease-out;
@@ -62,6 +62,9 @@
         text-align: center;
         top: 0;
         width: 90px;
+    }
+    h4:hover{
+        text-decoration: line-through;
     }
     h5{
         display: inline-block;

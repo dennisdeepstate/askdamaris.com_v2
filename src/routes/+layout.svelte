@@ -14,13 +14,9 @@
         loading = false
     })
     
-    /**
-     * @type {import('./$types').PageData}
-     */
-    export let data
 </script>
-<Modal user={data.user}/>
-<Nav user={data.user}/>
+<Modal />
+<Nav />
 <Banner loading={ loading } />
 <slot></slot>
 <Footer />

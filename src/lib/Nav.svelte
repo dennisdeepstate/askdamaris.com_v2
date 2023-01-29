@@ -2,9 +2,9 @@
     import { showModal } from "$lib/js/showModal"
     import { page } from "$app/stores"
     /**
-     * @type any}
+     * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
      */
-    export let user
+     let user = $page.data.user
 </script>
 <style>
     nav{
@@ -89,6 +89,6 @@
                 
             </ul>
         </div>
-        <div class="profile" on:click={showModal} on:keydown={showModal}>{user ? user.firstName.charAt(0) : "G"}</div>
+        <div class="profile" on:click={showModal} on:keydown={showModal}>{user.firstName ? user.firstName.charAt(0).toUpperCase() : "G"}</div>
     </div>
 </nav>

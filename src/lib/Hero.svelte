@@ -28,7 +28,7 @@
     .roll{
         display: grid;
     }
-@media only screen and (max-width: 900px){
+@media only screen and (max-width: 1200px){
     .hero_text{
         font-size: 18px;
     }

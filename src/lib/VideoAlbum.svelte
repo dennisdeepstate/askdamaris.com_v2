@@ -15,7 +15,7 @@
 </style>
 <section id="videos">
     {#each albums as album}
-        <VideoRoll setAtCenter={false} videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>
+        <VideoRoll setAtCenter={true} videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>
         <Spacer />
     {/each}
 </section>
