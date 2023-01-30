@@ -16,7 +16,7 @@
         justify-items: center;
         min-height: 540px;
         text-align: center;
-        width: 100vw;
+        width: 100%;
     }
     .hero_text{
         box-sizing: border-box;
@@ -28,7 +28,7 @@
     .roll{
         display: grid;
     }
-@media only screen and (max-width: 1200px){
+@media only screen and (max-width: 1440px){
     .hero_text{
         font-size: 18px;
     }
@@ -36,9 +36,9 @@
 </style>
 <section id="hero">
     <div class="hero_text">
-        <h2>this is your opportunity for self actualisation</h2>
-        <p>ask damaris is a platform that gives individuals an opportunity for self-actualisation and also supports businesses in their operations to achieve their desired outcomes. We offer one on one consultation sessions, training and workshops for teams and business process outsourcing.</p>
-        <Button style="cta" title="reach for the stars" on:modal={showModal}/>
+        <h2>reach your full potential</h2>
+        <p>Welcome to ask damaris, a platform  designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
+        <Button style="cta" title="learn and grow" on:modal={showModal}/>
     </div>
     <div class="roll">
         <VideoRoll videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>

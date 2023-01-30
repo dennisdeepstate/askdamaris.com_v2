@@ -31,10 +31,7 @@ export async function handle({ event, resolve }){
     }
   
     if (!event.locals.user.authenticated) {
-        cookies.set('askdamaris_sess', '', {
-            path: '/',
-            expires: new Date(0)
-        })
+        cookies.delete('askdamaris_sess')
     }
     const response = await resolve(event)
 

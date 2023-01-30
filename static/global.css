@@ -22,6 +22,8 @@
   --border_radius_x: 8px;
   --gradient_secondary: linear-gradient(-90deg, var(--color_purple_lite) 100%, var(--color_purple_secondary) 0%);
   --shadow_orange: 0px 6px 12px var(--color_orange_lite);
+}
+html:focus-within {
   scroll-behavior: smooth;
 }
 html > *, body{
@@ -73,6 +75,14 @@ section > h2{
   font-weight: 600;
   margin: 0 0 40px 0;
   text-align: center;
+}
+a{
+  color: var(--color_blackish);
+  text-decoration: none;
+}
+a:hover{
+  color: var(--color_purple_main);
+  text-decoration: line-through;
 }
 @-webkit-keyframes breathing {
   0% {

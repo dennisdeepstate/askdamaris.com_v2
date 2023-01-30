@@ -35,19 +35,19 @@
      */
     let aboutCards = [
         {
-            title: "One on One consultations",
-            body:"We provide lessons and work closely with you to attain your desired level when it comes to your:",
-            list: ["professional development", "business etiquette", "personal branding"]
+            title: "Sessions",
+            body:"We offer tailored instructions and work in partnership with you to achieve your objectives in:",
+            list: ["setting, monitoring and taking responsibility for your goals", "enhancing self-worth and confidence", "improving communication abilities", "developing interpersonal skills", "public speaking and presentation", "creating a personal brand", "preparing for interviews"]
         },
         {
             title: "Training & Workshops",
-            body:"Get customized training sessions for your team. Our model is designed to cater to your needs by creating innovative solutions, conducting writing sessions and value based review and evaluation. We specialize in:",
-            list: ["customer service", "email etiquette", "effective communication", "public speaking"]
+            body:"At ask damaris, we offer personalized training for your team. Our approach is tailored to meet your specific needs through the creation of unique solutions, hands-on writing sessions and feedback-based evaluations. our areas of expertise include:",
+            list: ["customer service training", "business and email etiquette", "leadership and management training", "workshop and fostering creativity and innovation", "time management and productivity workshops", "change management workshops"]
         },
         {
-            title: "Business Process Outsourcing",
-            body:"Our team of highly qualified personel are determined in making your business productive. Partner with us today and let us take care of your operations. We offer services in:",
-            list: ["data entry", "email handling", "customer support", "internet and web research"]
+            title: "Meet our founder",
+            body:"Damaris Mwikali is a dynamic leader with a proven track record of building and leading high-performing teams. \n\nHer passion is to empower and inspire the next generation to embrace positive change and discover their true purpose. She is reliable, energetic and a firm believer in the power of ongoing learning and self improvement. \n\nThrough her experiences and expertise, Damaris aims to ignite transformation and make a meaningful impact on people's lives . \n\nJoin her on this journey of self-discovery and let her be your guide as you confidently chase your dreams and strive to become the best version of yourself.",
+            list: []
         }
     ]
 </script>
@@ -84,6 +84,9 @@
         padding: 20px;
         width: calc(100% - 210px);
     }
+    .about_card > .about_content > p{
+        white-space: pre-line;
+    } 
     @media only screen and (max-width: 600px){
         .about_card{
             grid-template-columns: 1fr;

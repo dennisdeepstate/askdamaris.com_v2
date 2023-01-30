@@ -10,12 +10,13 @@
     nav{
         align-items: center;
         background: var(--color_white_translucent);
+        box-sizing: border-box;
         display: grid;
         height: 50px;
         justify-items: center;
         position: fixed;
         top: 0;
-        width: 100vw;
+        width: 100%;
         z-index: 12;
     }
     .nav_container{
@@ -44,6 +45,11 @@
         color: var(--color_purple_main);
         text-decoration: line-through;
     }
+    .logo{
+        cursor: pointer;
+        height: 28px;
+        object-fit: contain;
+    }
     .profile{
         background-color: var(--color_purple_main);
         border-radius: 50%;
@@ -57,11 +63,14 @@
         width: 30px;
     }
 @media only screen and (max-width: 600px){
+    .nav_container{
+        grid-template-columns: 1fr 1fr 1fr; 
+    }
     ul{
         background-color: var(--color_white);
         height: 100vh;
         position: absolute;
-        right: 0;
+        left: 0;
         top: 0;
         /* transform: translateX(240px); */
         width: 240px;
@@ -79,7 +88,7 @@
 
 <nav>
     <div class="nav_container">
-        <img src="#" alt="logo"/>
+        <a href="/"><img src="ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
         <div class="menu">
             <ul>
                 <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""}>home</a></li>
@@ -89,6 +98,6 @@
                 
             </ul>
         </div>
-        <div class="profile" on:click={showModal} on:keydown={showModal}>{user.firstName ? user.firstName.charAt(0).toUpperCase() : "G"}</div>
+        <div class="profile" on:click={showModal} on:keydown={showModal}>{user.firstName ? user.firstName.charAt(0).toUpperCase() : "?"}</div>
     </div>
 </nav>

@@ -109,7 +109,7 @@
         position: absolute;
         overflow-x: hidden;
         overflow-y: hidden;
-        width: 100vw;
+        width: 100%;
     }
     .roller{
         left: 0;

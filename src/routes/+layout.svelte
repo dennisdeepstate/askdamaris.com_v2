@@ -15,8 +15,8 @@
     })
     
 </script>
-<Modal />
 <Nav />
 <Banner loading={ loading } />
 <slot></slot>
 <Footer />
+<Modal />

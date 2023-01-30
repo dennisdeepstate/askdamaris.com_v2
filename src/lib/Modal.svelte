@@ -128,11 +128,12 @@
     .modal{
         background-color: var(--color_white);
         border-radius: var(--border_radius);
-        margin: 2vh calc( calc( 100vw - 400px ) / 2 );
+        margin: 12vh calc( calc( 100vw - 400px ) / 2 ) 0 calc( calc( 100vw - 400px ) / 2 );
         max-height: 70vh;
         padding: 12px;
         position: fixed;
-        overflow-y: scroll;
+        overflow-y: auto;
+        top: 0;
         text-align: center;
         width: 400px;
         z-index: 14;

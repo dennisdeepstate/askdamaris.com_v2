@@ -10,7 +10,7 @@
     #videos{
         display: grid;
         text-align: center;
-        margin-top: 80px;
+        margin: 80px auto 0 auto;
     }
 </style>
 <section id="videos">
