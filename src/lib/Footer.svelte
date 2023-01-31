@@ -1,7 +1,6 @@
 <style>
     footer, .footer_main{
         box-sizing: border-box;
-        height: 200px;
         width: 100%;
     }
     footer{
@@ -11,12 +10,13 @@
     }
     .footer_main{
         background-color: var(--color_white_translucent);
-        padding: 24px 0 0 0;
+        padding: 24px 0;
         z-index: 8;
     }
     .contacts{
         display: grid;
         grid-template-columns: 1fr 1fr;
+        justify-items: center;
         margin: 0 auto;
         max-width: 840px;
         min-width: 360px;
@@ -32,7 +32,7 @@
         list-style-type: none;
     }
     .contacts > ul > li > a > i{
-        margin: 0 8px 0 0;
+        margin: 0 12px 0 0;
     }
 @media only screen and (max-width: 600px){
     .contacts{

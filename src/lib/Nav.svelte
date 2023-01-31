@@ -37,17 +37,14 @@
         display: inline-block;
         margin: 0 30px;
     }
-    ul > li > a {
-        color: var(--color_blackish);
-        text-decoration: none;
-    }
-    ul > li > a:hover, .active{
+    .active{
         color: var(--color_purple_main);
         text-decoration: line-through;
     }
     .logo{
         cursor: pointer;
         height: 28px;
+        margin: 1px 0;
         object-fit: contain;
     }
     .profile{

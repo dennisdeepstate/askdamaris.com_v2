@@ -22,6 +22,6 @@ export async function GET({ cookies, locals}) {
         email: null
     }
     
-    throw redirect(307, `${PUBLIC_HOST}/#f`)
+    throw redirect(307, `${PUBLIC_HOST}/`)
 
 }

@@ -157,14 +157,10 @@
     h3{
         margin: 8px;
     }
-    .switch{
-        color: var(--color_purple_main);
-        cursor: pointer;
+    a{
         font-style: italic;
+        margin: 12px 0;
         text-transform: lowercase;
-    }
-    .switch:hover{
-        text-decoration: line-through;
     }
     .reply{
         border-radius: var(--border_radius);
@@ -204,7 +200,7 @@
             {/if}
             <Button title="login" style="cta" />
         </form>
-        <p class="switch" on:click={switchView} on:keydown={switchView}>Register Instead</p>
+        <a on:click|preventDefault={switchView} href="/">Register Instead</a>
     </div>
     <div class="register {showRegister ? "show" : ""}" style={ showRegister ? "" : "display: none;" }>
         <h3>Register</h3>
@@ -224,7 +220,7 @@
             {/if}
             <Button title="register" style="cta" />
         </form>
-        <p class="switch" on:click={switchView} on:keydown={switchView}>Login Instead</p>
+        <a on:click|preventDefault={switchView} href="/">Login Instead</a>
     </div>
     <div class="profile {showProfile ? "show" : ""}" style={ showProfile ? "" : "display: none;" }>
         <h3>{ user.firstName } { user.lastName }</h3>

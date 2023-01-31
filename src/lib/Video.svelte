@@ -85,7 +85,7 @@
 <a href="{PUBLIC_HOST}/videos/play/{link}">
 <div class="video_container {selected ? "selected" : ""} {isFree ? "free": ""}" style="background-image: url({thumb});">
     <div class="video_title">
-        <h4><h5>ep-{episode}:</h5> {title}</h4>
+        <h4 title="{title}"><h5>ep-{episode}:</h5> {title.length > 41 ? title.slice(0,42) + "..." : title}</h4>
     </div>
 </div>
 </a>
