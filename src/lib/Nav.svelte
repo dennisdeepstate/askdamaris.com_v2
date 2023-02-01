@@ -1,6 +1,7 @@
 <script>
     import { showModal } from "$lib/js/showModal"
     import { page } from "$app/stores"
+    import { PUBLIC_HOST } from "$env/static/public";
     /**
      * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
      */
@@ -85,7 +86,7 @@
 
 <nav>
     <div class="nav_container">
-        <a href="/"><img src="ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
+        <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
         <div class="menu">
             <ul>
                 <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""}>home</a></li>

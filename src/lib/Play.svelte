@@ -1,29 +1,69 @@
 <script>
     import { PUBLIC_HOST } from "$env/static/public";
-/**
- * @type { string }
- */
+    import { showModal } from "$lib/js/showModal";
+    /**
+     * @type { string }
+     */
     export let bunnyId
     /**
- * @type {string}
- */
+     * @type {string}
+     */
     export let playToken
     /**
- * @type {number}
- */
+     * @type {number}
+     */
     export let expiryTimeStamp
     /**
- * @type {string}
- */
+     * @type {string}
+     */
     export let title
     /**
- * @type {string}
- */
- export let albumName
+     * @type {number}
+     */
+    export let rating
     /**
- * @type { {bunny_id: string; title: string; thumb: string; premium: boolean}[] }
- */
+     * @type {boolean}
+     */
+    export let ratingLocked
+    /**
+     * @type {string}
+     */
+    export let albumName
+    /**
+     * @type { {bunny_id: string; title: string; thumb: string; premium: boolean}[] }
+     */
     export let relatedVideos
+    /**
+     * @type {any}
+     */
+    export let rate 
+    /**
+     * @param {string} link
+     */
+    function goToVideo(link){
+        window.location.href = link
+    }
+    /**
+     * @param {number} rate
+     */
+    async function handleRadioClick(rate){
+        if(ratingLocked) {
+            showModal()
+            return
+        }
+        await fetch(`${PUBLIC_HOST}/user/rate`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    bunny_id: bunnyId,
+                    rate: rate
+                }),
+                headers:{
+                    'content-type': 'application/json'
+                }
+            }
+        )
+    }
 </script>
 <style>
     .play{
@@ -42,9 +82,6 @@
         grid-template-columns: 1fr 1fr;
         padding: 12px 0;
         width: 100%;
-    }
-    .sibling_videos > a{
-        text-decoration: none;
     }
     .sibling_video_container{
         background-color: var(--color_blackish_translucent);
@@ -76,7 +113,7 @@
         width: 240px;
     }
     .sibling_video_container > .description.free::before{
-        background: var(--color_purple_main);
+        background: var(--color_purple_lite);
         color: var(--color_white);
         content: "free";
         height: 20px;
@@ -93,8 +130,33 @@
     h3{
         margin: 10px 0 20px 0;
     }
-    h4:hover{
-        text-decoration: line-through;
+    h4{
+        margin: 4px 0;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+    .rate_container{
+        height: 24px;
+    }
+    .rate{
+        display: flex;
+        flex-direction: row-reverse;
+        float: left;
+    }
+    .rate > input{
+        display: none;
+    }
+    .rate > label{
+        color: var(--color_purple_lite);
+        cursor: pointer;
+        font-size: 24px;   
+    }
+    .rate > input:not(:checked) ~ label:hover ~ label, .rate > label:hover{
+        color: var(--color_purple_main);
+    }
+    .rate > input:checked ~ label{
+        color: var(--color_purple_main);
     }
 @media only screen and (max-width: 900px){
     .play{
@@ -147,18 +209,31 @@
             <iframe title="{bunnyId}" src="https://iframe.mediadelivery.net/embed/87688/{bunnyId}?autoplay=true&token={playToken}&expires={expiryTimeStamp}" loading="lazy" style="border: none; position: absolute; top: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;">
             </iframe>
         </div>
-        <h3>{ title } ({albumName})</h3>
+        <h3>{ title } | {albumName}</h3>
+        <div class="rate_container">
+            <div class="rate">
+                <input type="radio" name="rate" id="rate-5" value="5" bind:group={rate} on:click={() => handleRadioClick(5)}/>
+                <label for="rate-5" class="icofont-heart"></label>
+                <input type="radio" name="rate" id="rate-4" value="4" bind:group={rate} on:click={() => handleRadioClick(4)}/>
+                <label for="rate-4" class="icofont-heart"></label>
+                <input type="radio" name="rate" id="rate-3" value="3" bind:group={rate} on:click={() => handleRadioClick(3)}/>
+                <label for="rate-3" class="icofont-heart"></label>
+                <input type="radio" name="rate" id="rate-2" value="2" bind:group={rate} on:click={() => handleRadioClick(2)}/>
+                <label for="rate-2" class="icofont-heart"></label>
+                <input type="radio" name="rate" id="rate-1" value="1" bind:group={rate} on:click={() => handleRadioClick(1)}/>
+                <label for="rate-1" class="icofont-heart"></label>
+            </div>
+        </div>
+        <h4>{rating} / 5</h4>
         <div class="sibling_videos">
             {#each relatedVideos as relatedVideo, i}
-            <a href="{PUBLIC_HOST}/videos/play/{relatedVideo.bunny_id}">
-                <div class="sibling_video_container">
+                <div class="sibling_video_container" on:click={()=>goToVideo(`${PUBLIC_HOST}/videos/play/${relatedVideo.bunny_id}`)} on:keydown={()=>goToVideo(`${PUBLIC_HOST}/videos/play/${relatedVideo.bunny_id}`)}>
                     <div class="thumb {bunnyId === relatedVideo.bunny_id ? "playing" : ""}" style="background-image: url({relatedVideo.thumb});"></div>
                     <div class="description {relatedVideo.premium ? "" : "free"}">
                         <h5>episode {i + 1}</h5>
-                        <h4>{relatedVideo.title}</h4>
+                        <a href="{PUBLIC_HOST}/videos/play/{relatedVideo.bunny_id}">{relatedVideo.title}</a>
                     </div>
                 </div>
-            </a>
             {/each}
         </div>
     </div>

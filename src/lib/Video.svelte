@@ -18,12 +18,16 @@
      * @type {number}
      */
       export let episode
+    function goToVideo(){
+        window.location.href = `${PUBLIC_HOST}/videos/play/${link}`
+    }
 </script>
 <style>
     .video_container{
         background-color: var(--color_white);
         background-size: cover;
         border-radius: var(--border_radius);
+        cursor: pointer;
         display: inline-block;
         height: 270px;
         margin: 0 20px 0 0;
@@ -50,7 +54,7 @@
         z-index: 7;
     }
     .free::after{
-        background: var(--color_purple_main);
+        background: var(--color_purple_lite);
         border-radius: var(--border_radius) 0 var(--border_radius) 0;
         color: var(--color_white);
         content: "free episode";
@@ -62,9 +66,6 @@
         text-align: center;
         top: 0;
         width: 90px;
-    }
-    h4:hover{
-        text-decoration: line-through;
     }
     h5{
         display: inline-block;
@@ -80,12 +81,13 @@
         height: 15px;
         width: 65px;
     }
+    a{
+        font-size: 14px;
+    }
 }
 </style>
-<a href="{PUBLIC_HOST}/videos/play/{link}">
-<div class="video_container {selected ? "selected" : ""} {isFree ? "free": ""}" style="background-image: url({thumb});">
+<div class="video_container {selected ? "selected" : ""} {isFree ? "free": ""}" style="background-image: url({thumb});" on:click={()=>goToVideo()} on:keypress={()=>goToVideo()}>
     <div class="video_title">
-        <h4 title="{title}"><h5>ep-{episode}:</h5> {title.length > 41 ? title.slice(0,42) + "..." : title}</h4>
+        <h5>ep-{episode}: &nbsp;</h5><a title="{title}" href="{PUBLIC_HOST}/videos/play/{link}">{title.length > 41 ? title.slice(0,42) + "..." : title}</a>
     </div>
 </div>
-</a>

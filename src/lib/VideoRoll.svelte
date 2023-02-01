@@ -87,14 +87,8 @@
     h3{
         margin-bottom: 10px;
     }
-    h5{
-        color: inherit;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 16px;
-    }
-    h5:hover{
-        text-decoration: line-through;
+    .price{
+        margin: 0 0 10px 0;
     }
     #video_roll{
         height: 270px;
@@ -160,7 +154,8 @@
 }
 </style>
 <svelte:window bind:innerWidth={viewWidth} on:keydown={(e) => handleKeyDown(e)} bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
-<h3>{ albumName } <h5>available for KES {albumPrice}</h5></h3>
+<h3>{ albumName }</h3>
+<a href="#" class="price">available for KES {albumPrice}</a>
 <div id="video_roll" bind:this={roll}>
     <div class="roll_container">
         <div class="scroller left" on:click={rollRight} on:keydown={rollRight}>
