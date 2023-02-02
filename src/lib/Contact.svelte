@@ -115,7 +115,7 @@
         height: 400px;
         margin: 0 auto 40px auto;
         max-width: 840px;
-        min-width: 360px;
+        min-width: 240px;
         padding: 40px 20px;
 
     }

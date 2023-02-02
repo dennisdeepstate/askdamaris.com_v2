@@ -130,12 +130,13 @@
         border-radius: var(--border_radius);
         margin: 12vh calc( calc( 100vw - 400px ) / 2 ) 0 calc( calc( 100vw - 400px ) / 2 );
         max-height: 70vh;
+        max-width: 400px;
         padding: 12px;
         position: fixed;
         overflow-y: auto;
         top: 0;
         text-align: center;
-        width: 400px;
+        width: 90%;
         z-index: 14;
     }
     .show{
@@ -180,6 +181,11 @@
         border: 1px solid var(--color_error_main);
         color: var(--color_error_main);
     }
+@media only screen and (max-width: 900px){
+    .modal{
+        margin: 12vh 2.5%;
+    }
+}
 </style>
 <div class="backdrop" style={ modal ? "" : "display: none;" } on:click={hideModal} on:keydown={hideModal}>
 </div>
