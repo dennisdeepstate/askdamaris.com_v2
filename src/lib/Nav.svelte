@@ -21,11 +21,12 @@
         duration: 300,
         easing: cubicInOut
     })
-
     afterUpdate(()=>{
         if(windowWidth > 600) sideNavX.set(0, {duration: 0})
     })
-
+    function handleResize(){
+        if(windowWidth <= 600) sideNavX.set(-240, {duration: 0})
+    }
     function handleProfileClick(){
         if(windowWidth > 600){
             showModal()
@@ -112,12 +113,17 @@
         display: block;
         margin: 12px auto;
     }
+    a.active{
+        text-decoration: underline;
+    }
     a:hover{
         text-decoration: underline;
     }
     i{
         box-sizing: border-box;
         border-bottom: 1px solid var(--color_greyish);
+        cursor: pointer;
+        font-style: normal;
         font-size: 24px;
         padding: 4px 12px;
         position: absolute;
@@ -128,7 +134,7 @@
     }
 }
 </style>
-<svelte:window bind:innerWidth={windowWidth}/>
+<svelte:window bind:innerWidth={windowWidth} on:resize={handleResize}/>
 <nav>
     <div class="nav_container">
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>

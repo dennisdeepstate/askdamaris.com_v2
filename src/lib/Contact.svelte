@@ -1,6 +1,7 @@
 <script>
     import { afterUpdate, onMount } from "svelte"
     import { PUBLIC_HOST } from "$env/static/public";
+    import { error } from "@sveltejs/kit";
 
     function mssgTime(){
         return new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
@@ -42,12 +43,16 @@
      */
     let contactOffset
     let currentRequirement = 0
-    let listOfRequirements = [{title: "name", message: "What's your name ?", error:"please enter a valid name"}, {title: "email", message: "what's your email address?", error:"please enter a valid email address"}, { title: "message", message: "leave us your message", error:"your message must be longer than a single character. thanks"}]
+    let listOfRequirements = [
+        {title: "name", message: "What's your name ?", error:"please enter a valid name"},
+        {title: "email", message: "what's your email address?", error:"please enter a valid email address"},
+        {title: "message", message: "leave us your message", error:"your message must be longer than a single character. thanks"}
+    ]
     /**
      * @param {Mssg []} chatMessages
      */
     let chatMessages = [new Mssg ("hi there", undefined,"bot")]
-    $: if(contactOffset < scroll * 0.8 && chatMessages.length < 2) chatMessages = [...chatMessages, new Mssg (listOfRequirements[0].message, undefined,"bot")]
+    $: if(contactOffset < scroll - 80 && chatMessages.length < 1) chatMessages = [...chatMessages, new Mssg (listOfRequirements[0].message, undefined,"bot")]
 
     async function scrollToBottomOfChat(){
         mssgBox.scroll({ top: mssgBox.scrollHeight, behavior: 'smooth' });
@@ -107,6 +112,59 @@
     afterUpdate(() => {
         scrollToBottomOfChat()
     })
+    let userMode
+    let botMode
+    let botModes = [
+        {
+            title: "name",
+            mssg: "What is your full name?",
+            errorMssg: "the email you entered is not a valid email address. Please try again",
+            buttons: [],
+            next:()=>"email"
+        },
+        {
+            title: "email",
+            mssg: "What is your email address",
+            errorMssg: "the email you entered is not a valid email address. Please try again",
+            buttons: [],
+            next:()=>"phone"
+        },
+        {
+            title: "phone",
+            mssg: "What is your phone number",
+            errorMssg: "the phone number you entered is not a valid phone number. Please try again",
+            buttons: [],
+            next:()=>"firstBranch()"
+        },
+        {
+            title: "topic",
+            mssg: "What topics are you interested in?",
+            errorMssg: " ",
+            buttons: [],
+            next: ()=>"objectives",
+        },
+        {
+            title: "message",
+            mssg: "Please leave us a message",
+            errorMssg: "a message cannot be shorter than 3 character",
+            buttons: [],
+            next: ()=>"end",
+        },
+        {
+            title: "intro",
+            mssg: "What topics are you interested in?",
+            errorMssg: "please select a valid option",
+            buttons: ["leave us a message", "corporate training", "individual consultation", "speaking engagement"],
+            next: ()=>"name",
+        },
+        {
+            title: "objectives",
+            mssg: "What are your key objectives?",
+            errorMssg: " ",
+            buttons: [],
+            next: ()=>"secondBranch()",
+        }
+    ]
 </script>
 <style>
     .chatbox{
@@ -116,7 +174,7 @@
         margin: 0 auto 40px auto;
         max-width: 840px;
         min-width: 240px;
-        padding: 40px 20px;
+        padding: 40px 0;
 
     }
     .chatbox > form >input[type="text"]{
@@ -129,11 +187,9 @@
         width: 80%;
     }
     .chatbox > .message_box{
-
         height: 360px;
-        padding: 0 10%;
+        padding: 0 5%;
         overflow-y: auto;
-
     }
     .message{
         animation-name: appear;
@@ -174,6 +230,9 @@
     .message.user > .time{
         text-align: right;
     }
+@media only screen and (max-width: 600px){
+
+}
 </style>
 <svelte:window bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <section id="contact">
@@ -189,3 +248,9 @@
         </form>
     </div>
 </section>
+<!-- 
+    mode = name
+    modes = [{ title: name; buttons[]; error; next}]
+    find mode.
+    if reply is successful (if buttons.length > 0 switch mode to reply else switch mode to next)
+ -->

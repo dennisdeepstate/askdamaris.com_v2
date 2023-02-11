@@ -3,6 +3,7 @@
     import { afterUpdate, onMount } from "svelte"
     import { tweened } from 'svelte/motion'
 	import { cubicInOut } from 'svelte/easing'
+    import { PUBLIC_HOST } from "$env/static/public";
     
     /**
      * @type {boolean}
@@ -129,6 +130,7 @@
         font-size: 18px;
         font-weight: bold;
         height: 24px;
+        line-height: 24px;
         padding: 12px;
         width: 24px;
     }
@@ -148,6 +150,7 @@
     .arrow{
         font-size: 16px;
         height: 18px;
+        line-height: 18px;
         padding: 9px;
         width: 18px;
     }
@@ -155,7 +158,7 @@
 </style>
 <svelte:window bind:innerWidth={viewWidth} on:keydown={(e) => handleKeyDown(e)} bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <h3>{ albumName }</h3>
-<a href="#" class="price">available for KES {albumPrice}</a>
+<a href="{PUBLIC_HOST}/buy/{albumName}" class="price">available for KES {albumPrice}</a>
 <div id="video_roll" bind:this={roll}>
     <div class="roll_container">
         <div class="scroller left" on:click={rollRight} on:keydown={rollRight}>
