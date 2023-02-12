@@ -2,22 +2,8 @@ import { users, sessions } from "$db/collections"
 import { hex, sha256} from '$lib/js/sha256'
 import { NODE_ENV } from "$env/static/private"
 import { Reply, Session } from "$lib/js/session"
+import { validateInput } from "$lib/js/validateInput"
 
-/**
- * @param {string} title
- * @param {string} input
- */
-function validateInput(title, input){
-    if(title==="name"){ 
-        return /^[A-Za-z][A-Za-z\'\-]+([\ A-Za-z][A-Za-z\'\-]+)*/.test(input)
-    }
-    if(title==="email") {
-        return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(input)
-    }
-    if(title==="password"){
-        return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*()<>_=+'";:{},[.`~\]\-\/\\\|]).{8,}$/.test(input)
-    }
-}
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request, cookies }) {

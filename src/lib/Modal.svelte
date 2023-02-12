@@ -4,6 +4,8 @@
     import { Modal } from "$lib/js/modalStore"
     import { hideModal } from "$lib/js/showModal";
     import { page } from "$app/stores"
+
+    let redirectUrl = `${PUBLIC_HOST}/videos`
     /**
      * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
      */
@@ -86,7 +88,7 @@
 
         if(registerSuccess) {
             hideModal()
-            window.location.href = `${PUBLIC_HOST}/videos`
+            window.location.href = redirectUrl
         }
    }
    async function login(){
@@ -107,11 +109,11 @@
 
         if(loginSuccess) {
             hideModal()
-            window.location.href = `${PUBLIC_HOST}/videos`
+            window.location.href = redirectUrl
         }
    }
    function switchView(){
-    showLogin = !showLogin
+        showLogin = !showLogin
    }
 </script>
 <style>

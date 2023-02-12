@@ -25,7 +25,7 @@ export async function POST({ request, cookies }) {
         maxAge: 60 * 60 * 24 * 2
     })
 
-    reply = new Reply(true, ["login was successfull"])
+    reply = new Reply(true, ["login was successful"])
     return new Response(JSON.stringify(reply),{ status: 200})
 
 }
