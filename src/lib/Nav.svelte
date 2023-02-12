@@ -134,7 +134,7 @@
     }
 }
 </style>
-<svelte:window bind:innerWidth={windowWidth} on:resize={handleResize}/>
+<svelte:window bind:innerWidth={windowWidth} on:resize={handleResize} />
 <nav>
     <div class="nav_container">
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>

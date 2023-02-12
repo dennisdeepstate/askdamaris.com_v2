@@ -25,7 +25,7 @@
      * @param {number} scroll
      */
     function getWalk(pos, scroll){
-        return scroll >= aboutOffset +  ( pos * cardHeight ) + 80 ? ( ( scroll - ( aboutOffset +  ( pos * cardHeight ) ) ) * 0.1 )  : 0
+        return scroll >= aboutOffset +  ( pos * cardHeight ) + 80 ? ( ( scroll - ( aboutOffset +  ( pos * cardHeight ) ) ) * 0.05 )  : 0
     }
     afterUpdate(() => {
         aboutOffset = about.offsetTop - windowHeight
@@ -35,16 +35,19 @@
      */
     let aboutCards = [
         {
+            img: "sessions.jpg",
             title: "Sessions",
             body:"We offer tailored instructions and work in partnership with you to achieve your objectives in:",
             list: ["setting, monitoring and taking responsibility for your goals", "enhancing self-worth and confidence", "improving communication abilities", "developing interpersonal skills", "public speaking and presentation", "creating a personal brand", "preparing for interviews"]
         },
         {
+            img: "workshop.jpg",
             title: "Training & Workshops",
             body:"At ask damaris, we offer personalized training for your team. Our approach is tailored to meet your specific needs through the creation of unique solutions, hands-on writing sessions and feedback-based evaluations. our areas of expertise include:",
             list: ["customer service training", "business and email etiquette", "leadership and management training", "workshop and fostering creativity and innovation", "time management and productivity workshops", "change management workshops"]
         },
         {
+            img: "damaris.jpg",
             title: "Meet our founder",
             body:"Damaris Mwikali is a dynamic leader with a proven track record of building and leading high-performing teams. \n\nHer passion is to empower and inspire the next generation to embrace positive change and discover their true purpose. She is reliable, energetic and a firm believer in the power of ongoing learning and self improvement. \n\nThrough her experiences and expertise, Damaris aims to ignite transformation and make a meaningful impact on people's lives . \n\nJoin her on this journey of self-discovery and let her be your guide as you confidently chase your dreams and strive to become the best version of yourself.",
             list: []
@@ -71,9 +74,12 @@
         z-index: 7;
     }
     .about_card > img{
+        border: 4px solid var(--color_white);
         border-radius: var(--border_radius);
         margin: 0 -10px -40px 0;
         min-height: 200px;
+        object-fit: cover;
+        overflow: hidden;
         position: absolute;
         justify-self: right;
         width: 200px;
@@ -119,7 +125,7 @@
                     {/each}
                 </ul>
             </div>
-            <img src="#" alt="" style="transform: translateY({ Math.min( getWalk(i, scroll), 50 ) * -1 }px) rotateZ({ Math.min(getWalk(i, scroll) * 0.2, 8) }deg);"/>
+            <img src={card.img + ""} alt="image for: {card.title}" style="transform: translateY({ Math.min( getWalk(i, scroll), 50 ) * -1 }px) rotateZ({ Math.min(getWalk(i, scroll) * 0.2, 8) }deg);"/>
         </div>
     </div>
     {/each}

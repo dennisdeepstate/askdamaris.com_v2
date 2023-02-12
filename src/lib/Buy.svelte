@@ -84,8 +84,12 @@
         margin: 12px 0;
         padding: 0;
     }
+    ul > li >span{
+        overflow: hidden;
+    }
     img{
         height: 54px;
+        overflow: hidden;
         object-fit: contain;
         width: 96px;
     }
@@ -128,7 +132,7 @@
             {/if}
             <label for="phone">Enter your MPESA phone number:</label>
             <input type="text" placeholder="254712345678" name="phone" id="phone" bind:value={phone} required/>
-            <Button style="cta" title={`pay: ${price}`}/>
+            <Button style="cta" title={`pay: KES${price}`}/>
         </form>
     </div>
 </section>

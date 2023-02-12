@@ -90,6 +90,7 @@
         grid-template-columns: 1fr 1fr;
         height: 135px;
         margin: 8px 0;
+        overflow: hidden;
         padding: 0;
         position: relative;
     }
@@ -200,6 +201,11 @@
     }
     .player{
         height: 216px;
+    }
+}
+@media only screen and (max-width: 480px){
+    .play{
+        width: 100%;
     }
 }
 </style>

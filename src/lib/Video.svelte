@@ -70,6 +70,9 @@
     h5{
         display: inline-block;
     }
+    a:hover{
+        text-decoration: underline;
+    }
 @media only screen and (max-width: 900px){
     .video_container{
         height: 180px;

@@ -183,9 +183,10 @@
         border: 1px solid var(--color_error_main);
         color: var(--color_error_main);
     }
-@media only screen and (max-width: 900px){
+@media only screen and (max-width: 600px){
     .modal{
-        margin: 12vh 2.5%;
+        margin: 12vh calc( calc( 100vw - 240px ) / 2 ) 0 calc( calc( 100vw - 240px ) / 2 );
+        max-width: 240px;
     }
 }
 </style>
