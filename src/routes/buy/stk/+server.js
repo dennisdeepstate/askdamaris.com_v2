@@ -97,7 +97,7 @@ export async function POST({ request, locals }) {
 
     const accessToken = await getAccessToken()
     if(accessToken){
-        const responseCode = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${locals.user.email}/${transaction.album}`, accessToken)
+        const responseCode = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}`, accessToken)
         response.success = responseCode === "0"
         response.mssg = response.success ? "we have sent an STK push to this number. Enter your pin and you can access the videos" : "an error occured please contact us via email"
     }
