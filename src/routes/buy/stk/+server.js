@@ -77,15 +77,15 @@ export async function POST({ request, locals }) {
     const transaction = await request.json()
     const album = await albums.findOne({name: transaction.album})
     if(!locals.user.email){
-        response.mssg = "please login"
+        response.mssg = "Please login"
         return new Response(JSON.stringify(response),{status: 403})
     }
     if(!validateInput("phone", transaction.phone)){
-        response.mssg = "please enter a valid phone number"
+        response.mssg = "Please enter a valid phone number"
         return new Response(JSON.stringify(response),{status: 403})
     }
     if(!album){
-        response.mssg = "the album you are trying to purchase does not exist"
+        response.mssg = "The album you are trying to purchase does not exist"
         return new Response(JSON.stringify(response),{status: 403})
     }
     const userMatchedToPurchase = await users.findOne({email: locals.user.email, "albums.name": transaction.album })
@@ -97,9 +97,9 @@ export async function POST({ request, locals }) {
 
     const accessToken = await getAccessToken()
     if(accessToken){
-        const responseCode = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}`, accessToken)
+        const responseCode = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}/${SAF_MY_PASSWORD}`, accessToken)
         response.success = responseCode === "0"
-        response.mssg = response.success ? "we have sent an STK push to this number. Enter your pin and you can access the videos" : "an error occured please contact us via email"
+        response.mssg = response.success ? "We have sent an STK push to this number. Enter your pin to complete the purchase" : "An error occured please send us an email on info@askdamaris.com"
     }
 
     return new Response(JSON.stringify(response),{status: 200})

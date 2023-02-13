@@ -1,13 +1,15 @@
 import { albums, mpesa, users } from "$db/collections"
-import { NODE_ENV } from "$env/static/private"
+import { NODE_ENV, SAF_MY_PASSWORD } from "$env/static/private"
 
-/** @type {import('./$types').RequestHandler} */
+/** @type {import('./../$types').RequestHandler} */
 export async function POST({ params, request }) {
 
     const mpesaReceived = await request.json()
     const email = params.email
     const albumName = params.album
+    const password = params.psswd
 
+    if(SAF_MY_PASSWORD !== password) return new Response(JSON.stringify('fail'),{status: 200})
     if(mpesaReceived.Body.stkCallBack.ResultCode !== "0") return new Response(JSON.stringify('fail'),{status: 200})
 
     const stkData = mpesaReceived.Body.stkCallBack.CallbackMetadata.Item

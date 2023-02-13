@@ -1,7 +1,7 @@
 <script>
     import { afterUpdate, onMount } from "svelte"
-    import { PUBLIC_HOST } from "$env/static/public"
-    import { validateInput } from "$lib/js/validateInput";
+    import { validateInput } from "$lib/js/validateInput"
+    import { PUBLIC_HOST } from "$env/static/public";
 
     function mssgTime(){
         return new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
@@ -46,6 +46,10 @@
     /**
      * @type {HTMLElement}
      */
+     let inputMssgHTML
+    /**
+     * @type {HTMLElement}
+     */
     let mssgBox
     /**
      * @type {number}
@@ -56,7 +60,7 @@
      */
     let chatMessages = [new Mssg ("hi there", undefined,"bot")]
     /**
-     * @type {{title: string; mssg: string; errorMssg: string; buttons: string [], next: any} []}
+     * @type {{title: string; mssg: string; errorMssg: string; buttons: string [], type: string, next: function} []}
      */
     let modes = [
         {
@@ -64,6 +68,7 @@
             mssg: "What is your full name?",
             errorMssg: "the email you entered is not a valid email address. Please try again",
             buttons: [],
+            type: "name",
             next:()=>"email"
         },
         {
@@ -71,83 +76,155 @@
             mssg: "What is your email address",
             errorMssg: "the email you entered is not a valid email address. Please try again",
             buttons: [],
+            type: "email",
             next:()=>"phone"
         },
         {
             title: "phone",
-            mssg: "What is your phone number",
-            errorMssg: "the phone number you entered is not a valid phone number. Please try again",
+            mssg: "What is your phone number? (format : 2547xxxxxxxx)",
+            errorMssg: "the phone number you entered is not a valid phone number. Please try again. (format : 2547xxxxxxxx)",
             buttons: [],
-            next:()=>"firstBranch()"
-        },
-        {
-            title: "topic",
-            mssg: "What topics are you interested in?",
-            errorMssg: " ",
-            buttons: [],
-            next: ()=>"objectives",
+            type: "phone",
+            next:()=>{
+                if(selections[0].selection === "leaving a message") return "message"
+                if(selections[0].selection === "speaking engagement") return "activity"
+                if(selections[0].selection === "corporate training" || selections[0].selection === "individual consultation") return "objectives"
+                return "end"
+            }
         },
         {
             title: "message",
             mssg: "Please leave us a message",
             errorMssg: "a message cannot be shorter than 3 character",
             buttons: [],
-            next: ()=>"end",
+            type: "message",
+            next: ()=>"end"
         },
         {
             title: "objectives",
             mssg: "What are your key objectives?",
-            errorMssg: " ",
+            errorMssg: "a message cannot be shorter than 3 character",
             buttons: [],
-            next: ()=>"secondBranch()",
+            type: "message",
+            next: ()=>{
+                if(selections[0].selection === "corporate training") return "date"
+                return "end"
+            }
+        },
+        {
+            title: "activity",
+            mssg: "What is the occasion? e.g. graduation, high school motivational talks",
+            errorMssg: "a message cannot be shorter than 3 character",
+            buttons: [],
+            type: "message",
+            next:()=> "date"
+        },
+        {
+            title: "date",
+            mssg: "Which day would you like to schedule this? (format: dd-mm-yyyy)",
+            errorMssg: "please enter a valid date using this format dd-mm-yyyy",
+            buttons: [],
+            type: "date",
+            next:()=> "hours"
+        },
+        {
+            title: "hours",
+            mssg: "How long would you like the session to last?",
+            errorMssg: "please select a valid option",
+            buttons: ["1 hour", "2 hours", "3 hours", "4 hours or more"],
+            type: "message",
+            next:()=> "budget"
+        },
+        {
+            title: "budget",
+            mssg: "What's your budget",
+            errorMssg: "please select a valid option",
+            buttons: ["below 10K", "10k to 30k", "30k to 50k", "50k or more"],
+            type: "message",
+            next:()=> "end"
         }
+        
     ]
-
-    let selections
+    /**
+     * @type {{ title: string; selection: string;}[]}
+     */
+    let selections = []
     let firstMessage = {
         title: "intro",
-        mssg: "What topics are you interested in?",
+        mssg: "What are you interested in?",
         errorMssg: "please select a valid option",
-        buttons: ["leave us a message", "corporate training", "individual consultation", "speaking engagement"],
+        buttons: ["leaving a message", "corporate training", "individual consultation", "speaking engagement"],
+        type: "message",
         next: ()=>"name",
     }
+    /**
+     * @type {{title: String; mssg: String; errorMssg: String; buttons: String[]; type: string; next: function } | undefined}
+     */
     let currentMode = firstMessage
 
     $: if(contactOffset < scroll - ( windowHeight * 0.3 ) && chatMessages.length <= 1){
         chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
     }
-    $: console.log(chatMessages)
 
     async function scrollToBottomOfChat(){
         mssgBox.scroll({ top: mssgBox.scrollHeight, behavior: 'smooth' });
     }
 
     async function sendMessage(){
+        if(!currentMode) return
         chatMessages = [...chatMessages, new Mssg(inputMssg,undefined,"user")]
         async function botReply(){
-            if( currentMode.buttons.length > 0){
-                if(!currentMode.buttons.includes(inputMssg)){
-                    chatMessages = [...chatMessages, new Mssg(currentMode.errorMssg,undefined,"bot")]
-                }else{
-                    selections.push({title: currentMode.title, selection: inputMssg})
-                }
-            }else{
-                //validate
+            if(!currentMode) return
+            if(currentMode.buttons.length > 0 && !currentMode.buttons.includes(inputMssg)){
+                chatMessages = [...chatMessages, new Mssg(currentMode.errorMssg,undefined,"bot")]
+                return
             }
+            if(currentMode.buttons.length === 0 ){
+                if(!validateInput(currentMode.type, inputMssg)){
+                    chatMessages = [...chatMessages, new Mssg(currentMode.errorMssg,undefined,"bot")]
+                    return
+                }
+            }
+            selections.push({title: currentMode.title, selection: inputMssg})
+            let next = currentMode.next()
+            if(next === "end"){
+                const sendContact = await fetch(`${PUBLIC_HOST}/contact`,{ 
+                    method: 'POST',
+                    body: JSON.stringify(selections),
+                    headers:{
+                        'content-type': 'application/json'
+                    }
+                })
+                let success = (await sendContact.json()) === 'ok'
+                if(success){
+                    chatMessages = [...chatMessages, new Mssg(`Thank you, ${selections.find(select => select.title === "name")?.selection}, for contacting us. A member of our team will reach out to you`,undefined,"bot")]
+                }else{
+                    chatMessages = [...chatMessages, new Mssg(`Unfortunately, we could not send your message. Please refresh the page and try again`,undefined,"bot")]
+                }
+                currentMode = undefined
+                inputMssg = ""
+                return
+            }
+            currentMode = modes.find(mode => mode.title === next)
+            inputMssg = ""
+            if(currentMode) chatMessages = [...chatMessages, new Mssg(currentMode.mssg,undefined,"bot",currentMode.buttons)]
         }
 
     setTimeout(async() => await botReply(), 500)
 
     }
+
     afterUpdate(() => {
         scrollToBottomOfChat()
     })
+
     /**
      * @param {string} button
      */
     function replyByButton(button){
         inputMssg = button
         submitBtn.click()
+        inputMssgHTML.focus()
     }
 </script>
 <style>
@@ -165,7 +242,7 @@
         border: none;
         border-radius: var(--border_radius_secondary);
         display: block;
-        margin: 0 auto;
+        margin: 2px auto 0  auto;
         padding: 0 25px;
         height: 50px;
         width: 80%;
@@ -191,14 +268,16 @@
         display: grid;
         gap: 4px;
         grid-template-columns: 1fr 1fr;
+        margin-bottom: 4px;
         padding: 2px;
         width: 50%;
     }
     .message_box > .selections > button{
-        background-color: rgba(25, 25, 25, 0.02);
+        background-color: var(--color_orange_lite);
+        color: var(--color_orange_main);
     }
     .message_box > .selections > button:hover{
-        background-color: rgba(25, 25, 25, 0.05);
+        color: var(--color_blackish);
     }
     .message > p{
         box-sizing: border-box;
@@ -231,6 +310,11 @@
     .message.user > .time{
         text-align: right;
     }
+@media only screen and (max-width: 900px){
+    .message_box > .selections{
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 <svelte:window bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <section id="contact">
@@ -249,7 +333,7 @@
             {/each}
         </div>
         <form on:submit|preventDefault={sendMessage} bind:this={form}>
-            <input type="text" placeholder="write your  here, then press enter to send." bind:value={inputMssg}/>
+            <input type="text" placeholder="write your {currentMode ? currentMode.type : "message"} here then press enter to send." bind:value={inputMssg} bind:this={inputMssgHTML}/>
             <input type="submit" style="display: none;" bind:this={submitBtn}/>
         </form>
     </div>
