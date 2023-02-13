@@ -85,7 +85,7 @@
             errorMssg: "the phone number you entered is not a valid phone number. Please try again. (format : 2547xxxxxxxx or 2541xxxxxxxx)",
             buttons: [],
             type: "phone",
-            next:()=>{
+            next:() => {
                 if(selections[0].selection === "leaving a message") return "message"
                 if(selections[0].selection === "speaking engagement") return "activity"
                 if(selections[0].selection === "corporate training" || selections[0].selection === "individual consultation") return "objectives"
@@ -106,7 +106,7 @@
             errorMssg: "a message cannot be shorter than 3 character",
             buttons: [],
             type: "message",
-            next: ()=>{
+            next: () => {
                 if(selections[0].selection === "corporate training") return "date"
                 return "end"
             }
@@ -155,7 +155,13 @@
         errorMssg: "please select a valid option",
         buttons: ["leaving a message", "corporate training", "individual consultation", "speaking engagement"],
         type: "message",
-        next: ()=>"name",
+        next: (/** @type {string} */ input) => {
+            if(!selections.find(select => select.title === "email")) return "name"
+            if(input === "leaving a message") return "message"
+            if(input === "speaking engagement") return "activity"
+            if(input === "corporate training" || input === "individual consultation") return "objectives"
+            return "end"
+        },
     }
     /**
      * @type {{title: String; mssg: String; errorMssg: String; buttons: String[]; type: string; next: function } | undefined}
@@ -186,7 +192,7 @@
                 }
             }
             selections.push({title: currentMode.title, selection: inputMssg})
-            let next = currentMode.next()
+            let next = currentMode.next(inputMssg)
             if(next === "end"){
                 const sendContact = await fetch(`${PUBLIC_HOST}/contact`,{ 
                     method: 'POST',
@@ -197,11 +203,13 @@
                 })
                 let success = (await sendContact.json()) === 'ok'
                 if(success){
-                    chatMessages = [...chatMessages, new Mssg(`Thank you, ${selections.find(select => select.title === "name")?.selection}, for contacting us. A member of our team will reach out to you`,undefined,"bot")]
+                    chatMessages = [...chatMessages, new Mssg(`Thank you, ${selections.find(select => select.title === "name")?.selection}, for contacting us. A member of our team will reach out to you`,undefined,"bot")]  
                 }else{
                     chatMessages = [...chatMessages, new Mssg(`Unfortunately, we could not send your message. Please refresh the page and try again`,undefined,"bot")]
                 }
-                currentMode = undefined
+                currentMode = firstMessage
+                currentMode.mssg = "Are you interested in anything else?"
+                chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
                 inputMssg = ""
                 return
             }
