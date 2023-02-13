@@ -81,8 +81,8 @@
         },
         {
             title: "phone",
-            mssg: "What is your phone number? (format : 2547xxxxxxxx)",
-            errorMssg: "the phone number you entered is not a valid phone number. Please try again. (format : 2547xxxxxxxx)",
+            mssg: "What is your phone number? (format : 2547xxxxxxxx or 2541xxxxxxxx)",
+            errorMssg: "the phone number you entered is not a valid phone number. Please try again. (format : 2547xxxxxxxx or 2541xxxxxxxx)",
             buttons: [],
             type: "phone",
             next:()=>{

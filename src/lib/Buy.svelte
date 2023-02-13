@@ -131,7 +131,7 @@
                 </div>
             {/if}
             <label for="phone">Enter your MPESA phone number:</label>
-            <input type="text" placeholder="2547xxxxxxxx" name="phone" id="phone" bind:value={phone} required/>
+            <input type="text" placeholder="2547xxxxxxxx or 2541xxxxxxxx" name="phone" id="phone" bind:value={phone} required/>
             <Button style="cta" title={`pay: KES${price}`}/>
         </form>
     </div>
