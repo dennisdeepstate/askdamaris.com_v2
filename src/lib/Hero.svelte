@@ -51,7 +51,7 @@
 </style>
 <section id="hero">
     <div class="hero_text">
-        <h2>Reach your full potential</h2>
+        <h2>reach your full potential</h2>
         <p>Welcome to ask damaris, a platform  designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
         <Button style="cta" title="learn and grow" on:modal={showModal}/>
     </div>
