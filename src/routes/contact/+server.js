@@ -11,10 +11,10 @@ export async function POST({ request }) {
     })
 
     let saveMessage = await messages.insertOne({mssg})
-    let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name")
-    let intro = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "intro")
-    let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email")
-    let phone = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "phone")
+    let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name").selection
+    let intro = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "intro").selection
+    let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email").selection
+    let phone = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "phone").selection
     /**
      * @type {string}
      */
