@@ -11,10 +11,10 @@ export async function POST({ request }) {
     })
 
     let saveMessage = await messages.insertOne({mssg})
-    let name = mssg.find((/** @type {{ selection: string; }} */ obj) => obj.selection === "name")
-    let intro = mssg.find((/** @type {{ selection: string; }} */ obj) => obj.selection === "intro")
-    let email = mssg.find((/** @type {{ selection: string; }} */ obj) => obj.selection === "email")
-    let phone = mssg.find((/** @type {{ selection: string; }} */ obj) => obj.selection === "phone")
+    let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name")
+    let intro = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "intro")
+    let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email")
+    let phone = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "phone")
     /**
      * @type {string}
      */
@@ -22,18 +22,18 @@ export async function POST({ request }) {
     mssg.forEach((/** @type {{ title: string; selection: string; }} */ obj) => {
         mssgRows += `
             <tr>
-            <td style="border: 1px solid black; padding: 5px;">${obj.title}</td>
-            <td style="border: 1px solid black; padding: 5px;">${obj.selection}</td>
+            <td style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">${obj.title}</td>
+            <td style="border: 1px solid rgb(164, 156, 177); padding: 8px;">${obj.selection}</td>
             </tr>
         `
     })
     let html = `
-        <h3>${name} (${phone})</h3>
-        <p>${intro}</p>
-        <table style="border-collapse: collapse;">
+        <h3 style="color: rgba(90, 24, 154, 1);">${name} | phone: ${phone}</h3>
+        <p style="color: rgba(29, 29, 29, 1);">${intro}</p>
+        <table style="border-collapse: collapse; color: rgba(29, 29, 29, 1);">
             <tr>
-                <th style="border: 1px solid black; padding: 5px;">Query</th>
-                <th style="border: 1px solid black; padding: 5px;">Response</th>
+                <th style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">Query</th>
+                <th style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">Response</th>
             </tr>
             ${mssgRows}
         </table>
