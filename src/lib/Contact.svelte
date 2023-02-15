@@ -86,9 +86,10 @@
             buttons: [],
             type: "phone",
             next:() => {
-                if(selections[0].selection === "leaving a message") return "message"
-                if(selections[0].selection === "speaking engagement") return "activity"
-                if(selections[0].selection === "corporate training" || selections[0].selection === "individual consultation") return "objectives"
+                let x = selections.find(select => select.title === "intro")?.selection
+                if(x === "leaving a message") return "message"
+                if(x === "speaking engagement") return "activity"
+                if(x === "corporate training" || x === "individual consultation") return "objectives"
                 return "end"
             }
         },
@@ -107,7 +108,7 @@
             buttons: [],
             type: "message",
             next: () => {
-                if(selections[0].selection === "corporate training") return "date"
+                if(selections.find(select => select.title === "intro")?.selection === "corporate training") return "date"
                 return "end"
             }
         },
@@ -140,6 +141,14 @@
             mssg: "What's your budget",
             errorMssg: "please select a valid option",
             buttons: ["below 10K", "10k to 30k", "30k to 50k", "50k or more"],
+            type: "message",
+            next:()=> "pax"
+        },
+        {
+            title: "pax",
+            mssg: "How many people will be attending?",
+            errorMssg: "please select a valid option",
+            buttons: ["below 50", "50 to 200", "200 to 500", "500 or more"],
             type: "message",
             next:()=> "end"
         }
@@ -211,6 +220,7 @@
                 currentMode.mssg = "Are you interested in anything else?"
                 chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
                 inputMssg = ""
+                selections = selections.filter(selection => selection.title === "name" || selection.title === "email" || selection.title === "phone")
                 return
             }
             currentMode = modes.find(mode => mode.title === next)
