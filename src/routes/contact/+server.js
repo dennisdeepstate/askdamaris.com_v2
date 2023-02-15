@@ -22,18 +22,18 @@ export async function POST({ request }) {
     mssg.forEach((/** @type {{ title: string; selection: string; }} */ obj) => {
         mssgRows += `
             <tr>
-            <td style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">${obj.title}</td>
-            <td style="border: 1px solid rgb(164, 156, 177); padding: 8px;">${obj.selection}</td>
+            <td style="border: 1px solid #a49cb1; padding: 8px; color: #5a189a;">${obj.title}</td>
+            <td style="border: 1px solid #a49cb1; padding: 8px;">${obj.selection}</td>
             </tr>
         `
     })
     let html = `
-        <h3 style="color: rgba(90, 24, 154, 1);">${name} | phone: ${phone}</h3>
-        <p style="color: rgba(29, 29, 29, 1);">${intro}</p>
-        <table style="border-collapse: collapse; color: rgba(29, 29, 29, 1);">
+        <h3 style="color: #5a189a;">${name} | phone: ${phone}</h3>
+        <p style="color: #1d1d1d;">${intro}</p>
+        <table style="border-collapse: collapse; color: #1d1d1d;">
             <tr>
-                <th style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">Query</th>
-                <th style="border: 1px solid rgb(164, 156, 177); padding: 8px; color: rgba(90, 24, 154, 1);">Response</th>
+                <th style="border: 1px solid #a49cb1; padding: 8px; color: #5a189a;">Query</th>
+                <th style="border: 1px solid #a49cb1; padding: 8px; color: #5a189a;">Response</th>
             </tr>
             ${mssgRows}
         </table>
