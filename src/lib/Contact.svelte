@@ -227,15 +227,18 @@
             inputMssg = ""
             if(currentMode) chatMessages = [...chatMessages, new Mssg(currentMode.mssg,undefined,"bot",currentMode.buttons)]
         }
-
-    setTimeout(async() => await botReply(), 500)
-
-    }
-
-    afterUpdate(() => {
+        async function thinking(){
+            return new Promise((resolve, reject) => {
+                resolve(
+                    setTimeout(async() => {
+                        await botReply()
+                        scrollToBottomOfChat()
+                }, 500))
+            })
+        }
+        await thinking()
         scrollToBottomOfChat()
-    })
-
+    }
     /**
      * @param {string} button
      */

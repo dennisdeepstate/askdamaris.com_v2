@@ -3,6 +3,7 @@ import { createTransport } from "nodemailer"
 
 
 let transporter = createTransport({
+    name: 'smtp.zoho.com',
     host: 'smtp.zoho.com',
     port: 465,
     secure: true,
