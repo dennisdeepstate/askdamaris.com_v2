@@ -49,12 +49,15 @@ export async function POST({ request }) {
         to: "info@askdamaris.com",
         subject: `askdamaris.com contact form [name: ${name}] [service: ${intro}]`,
         replyTo: email,
+        text: JSON.stringify(mssg),
         html: html,
     }
 
-    transporter.sendMail(mailOptions, (error)=>{
-        if(error) {
+   transporter.sendMail(mailOptions, (error, response) => {
+        if (error) {
             console.log(error)
+        }else{
+            console.log(response)
         }
     })
 
