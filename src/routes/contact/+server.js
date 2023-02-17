@@ -57,7 +57,7 @@ export async function POST({ request }) {
         if (error) {
             console.log(error)
         }else{
-            console.log(response)
+            console.log(response.accepted)
         }
     })
 
