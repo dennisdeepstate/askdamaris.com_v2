@@ -52,13 +52,30 @@ export async function POST({ request }) {
         text: JSON.stringify(mssg),
         html: html,
     }
-
-   transporter.sendMail(mailOptions, (error, response) => {
-        if (error) {
-            console.log(error)
-        }else{
-            console.log(response.accepted)
-        }
+//     transporter.verify((err, success)=>{
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log(success)
+//         }  
+//     })
+//    transporter.sendMail(mailOptions, (err, info) => {
+//         if (err) {
+//             console.log(err)
+//         }else{
+//             console.log(info)
+//         }
+//     })
+    await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+            } else {
+                console.log(info);
+                resolve(info);
+            }
+        })
     })
 
     return new Response(JSON.stringify('ok'),{status: 200})
