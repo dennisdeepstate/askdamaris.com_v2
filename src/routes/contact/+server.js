@@ -31,10 +31,11 @@ export async function POST({ request }) {
             </tr>
         `
     })
+    
     let html = `
         <html>
+            <h3 style="color: #5a189a;">${intro}</h3>
             <h3 style="color: #5a189a;">${name} | phone: ${phone}</h3>
-            <p style="color: #1d1d1d;">${intro}</p>
             <table style="border-collapse: collapse; color: #1d1d1d;">
                 <tr>
                     <th style="border: 1px solid #a49cb1; padding: 12px; color: #5a189a;">Query</th>
@@ -47,33 +48,19 @@ export async function POST({ request }) {
     let mailOptions = {
         from: ZOHO_USER,
         to: "info@askdamaris.com",
-        subject: `askdamaris.com contact form [name: ${name}] [service: ${intro}]`,
+        subject: `[CONTACT FORM] [SERVICE: ${intro}] [GUEST NAME: ${name}]`,
         replyTo: email,
         text: JSON.stringify(mssg),
-        html: html,
+        html: html
     }
-//     transporter.verify((err, success)=>{
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             console.log(success)
-//         }  
-//     })
-//    transporter.sendMail(mailOptions, (err, info) => {
-//         if (err) {
-//             console.log(err)
-//         }else{
-//             console.log(info)
-//         }
-//     })
+
     await new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
-                console.error(err);
-                reject(err);
+                console.error(err)
+                reject(err)
             } else {
-                console.log(info);
-                resolve(info);
+                resolve(info)
             }
         })
     })
