@@ -48,7 +48,7 @@ export async function POST({ request }) {
     let mailOptions = {
         from: ZOHO_USER,
         to: "info@askdamaris.com",
-        subject: `[CONTACT FORM] [SERVICE: ${intro}] [GUEST NAME: ${name}]`,
+        subject: `[GUEST NAME: ${name}] [SERVICE: ${intro}] [${JSON.stringify(saveMessage.insertedId)}]`,
         replyTo: email,
         text: JSON.stringify(mssg),
         html: html
