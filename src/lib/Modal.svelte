@@ -388,6 +388,8 @@
         </form>
         <div class="options">
             <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+            <br />
+            <a on:click|preventDefault={()=>switchView("change_password")} href="/">forgot password?</a>    
         </div>
         {#if registerReplies.length > 0 && !registerSuccess}
             <div class="reply error">
@@ -423,6 +425,8 @@
         </form>
         <div class="options">
             <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+            <br />
+            <a on:click|preventDefault={()=>switchView("register")} href="/">Register instead?</a>
         </div>
         {#if verificationReplies.length > 0 && !verificationSent}
             <div class="reply error">

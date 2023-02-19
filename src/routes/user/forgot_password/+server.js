@@ -12,7 +12,7 @@ export async function POST({ request }) {
 
     user.email = user.email.toLowerCase()
     const findUser = await users.findOne({email: user.email})
-    if(!findUser) return new Response(JSON.stringify(new Reply(false, ['the email you entered is either not valid or is not registered on askdamaris.com'])),{status: 200})
+    if(!findUser) return new Response(JSON.stringify(new Reply(false, ['the email you entered is not registered on askdamaris.com'])),{status: 200})
 
     const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 30)
     const code = Math.floor(Math.random() * 100000).toString()
