@@ -13,6 +13,8 @@ export async function POST({ request }) {
     let user = await request.json()
     let reply = new Reply(false, [])
 
+    user.email = user.email.toLowerCase()
+
     if(!validateInput("email", user.email)) reply.replies.push("please enter a valid email address")
     if(!validateInput("name", user.firstName)) reply.replies.push("please enter a real first name")
     if(!validateInput("name", user.lastName)) reply.replies.push("please enter a real last name")
@@ -37,9 +39,19 @@ export async function POST({ request }) {
     let mailOptions = {
         from: ZOHO_USER,
         to: user.email,
-        subject: `ASKDAMARIS.COM verify your email`,
+        subject: `ASKDAMARIS.COM VERIFICATION CODE`,
         text: `your verification code is ${code}. It will expire in 30 minutes`,
-        html: writeEmail("Verify your email address", "a verification code for your askdamaris.com account", "You have successfully created an account with askdamaris.com . Use the verification code below to verify your account. If you did not request for this, safely ignore this email", code)
+        html: writeEmail("Verify your email address", "a verification code for your askdamaris.com account", "You have successfully created an account with askdamaris.com . Use the verification code to verify your account. Please note that this code expires after 30 minutes. If you did not request for this, safely ignore this email", code)
+    }
+
+    const verifyTransporter = await new Promise((resolve) => {
+        transporter.verify(function (info) {
+            resolve(info)
+        })
+    })
+
+    if(!verifyTransporter){
+        return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 200})
     }
 
     await new Promise((resolve, reject) => {

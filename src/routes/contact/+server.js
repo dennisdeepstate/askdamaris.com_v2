@@ -17,7 +17,7 @@ export async function POST({ request }) {
 
     let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name").selection
     let intro = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "intro").selection
-    let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email").selection
+    let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email").selection.toLowerCase()
     let phone = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "phone").selection
     /**
      * @type {string}
@@ -52,6 +52,16 @@ export async function POST({ request }) {
         replyTo: email,
         text: JSON.stringify(mssg),
         html: html
+    }
+
+    const verifyTransporter = await new Promise((resolve) => {
+        transporter.verify(function (info) {
+            resolve(info)
+        })
+    })
+
+    if(!verifyTransporter){
+        return new Response(JSON.stringify('fail'),{ status: 200})
     }
 
     await new Promise((resolve, reject) => {

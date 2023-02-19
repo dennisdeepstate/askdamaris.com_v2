@@ -292,8 +292,9 @@
         margin: 8px;
     }
     a{
+        display: inline-block;
         font-style: italic;
-        margin: 12px 0 0 0;
+        margin: 8px 0 0 0;
         text-transform: lowercase;
     }
     .reply{
@@ -341,11 +342,11 @@
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCodeForEmail} required/>
             <Button title="verify" style="cta" />
         </form>
-        <span class="options">
+        <div class="options">
             <a on:click|preventDefault={()=>switchView("change_password")} href="/">forgot password?</a>
             <br />
             <a on:click|preventDefault={()=>switchView("register")} href="/"> Register instead?</a>
-        </span>
+        </div>
         {#if loginReplies.length > 0 && !loginSuccess}
             <div class="reply error">
                 <ul>
@@ -385,9 +386,9 @@
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCodeForEmail} required/>
             <Button title="verify" style="cta" />
         </form>
-        <span class="options">
+        <div class="options">
             <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
-        </span>
+        </div>
         {#if registerReplies.length > 0 && !registerSuccess}
             <div class="reply error">
                 <ul>
@@ -420,9 +421,9 @@
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCode} required/>
             <Button title="change password" style="cta" />
         </form>
-        <span class="options">
+        <div class="options">
             <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
-        </span>
+        </div>
         {#if verificationReplies.length > 0 && !verificationSent}
             <div class="reply error">
                 <ul>
@@ -446,8 +447,8 @@
 <!-- Start Profile form -->
     <div class="profile {showProfile ? "show" : ""}" style={ showProfile ? "" : "display: none;" }>
         <h3>{ user.firstName } { user.lastName }</h3>
-        <span class="options">
+        <div class="options">
             <a href="{PUBLIC_HOST}/user/logout">logout</a>
-        </span>
+        </div>
     </div>
 </div>

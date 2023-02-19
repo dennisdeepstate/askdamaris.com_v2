@@ -11,6 +11,7 @@ export async function POST({ request, cookies }) {
     let user = await request.json()
     let reply = new Reply(false, [])
 
+    user.email = user.email.toLowerCase()
     if(!validateInput("password", user.password)) reply.replies.push("password must be atleast 8 characters long. Must also contain special characters, numbers, small and capital letters")
     if(reply.replies.length > 0) return new Response(JSON.stringify(reply),{status: 200})
 
