@@ -252,11 +252,11 @@
     .chatbox{
         background-color: var(--color_blackish_translucent);
         border-radius: var(--border_radius);
-        height: 400px;
+        height: 480px;
         margin: 0 auto 40px auto;
         max-width: 840px;
-        min-width: 240px;
-        padding: 40px 0;
+        min-width: 300px;
+        padding: 20px 0;
 
     }
     .chatbox > form >input[type="text"]{
@@ -269,7 +269,7 @@
         width: 80%;
     }
     .chatbox > .message_box{
-        height: 360px;
+        height: 440px;
         padding: 0 5%;
         overflow-y: auto;
     }
@@ -343,7 +343,9 @@
     <div class="chatbox">
         <div class="message_box" bind:this={mssgBox}>
             {#each chatMessages as chatMessage}
-                <div class="message {chatMessage.author}"><p>{chatMessage.message}</p><span class="time">{chatMessage.time}</span></div>
+                <div class="message {chatMessage.author}">
+                    <p>{chatMessage.message}</p><span class="time">{chatMessage.time}</span>
+                </div>
                 {#if chatMessage.buttons.length > 0}
                     <div class="selections">
                         {#each chatMessage.buttons as button}
@@ -359,9 +361,3 @@
         </form>
     </div>
 </section>
-<!-- 
-    mode = name
-    modes = [{ title: name; buttons[]; error; next}]
-    find mode.
-    if reply is successful (if buttons.length > 0 switch mode to reply else switch mode to next)
- -->

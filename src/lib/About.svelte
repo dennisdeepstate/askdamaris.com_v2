@@ -58,7 +58,7 @@
     .about_card, .gradient_border{
         border-radius: var(--border_radius);
         min-height: 200px;
-        min-width: 240px;
+        min-width: 300px;
         max-width: 840px;
         width: 100%;
     }

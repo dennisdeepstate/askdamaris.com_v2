@@ -27,14 +27,21 @@
     function handleResize(){
         if(windowWidth <= 600) sideNavX.set(-240, {duration: 0})
     }
+    function toggleNav(){
+        if(windowWidth <= 600){
+            showSideNav = !showSideNav
+            sideNavX.set(showSideNav ? 0 : -240)
+            return
+        }
+    }
     function handleProfileClick(){
         if(windowWidth > 600){
             showModal()
             return
         }
-        showSideNav = !showSideNav
-        sideNavX.set(showSideNav ? 0 : -240)
+        toggleNav()
     }
+
 </script>
 <style>
     nav{
@@ -135,19 +142,19 @@
     }
 }
 </style>
-<svelte:window bind:innerWidth={windowWidth} on:resize={handleResize} />
+<svelte:window bind:innerWidth={windowWidth} on:resize={handleResize}/>
 <nav>
     <div class="nav_container">
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
         <div class="menu">
             <ul style="transform: translateX({$sideNavX}px);">
-                <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""}>home</a></li>
-                <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""}>about</a></li>
-                <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""}>contact</a></li>
-                <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""}>videos</a></li>
+                <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""} on:click={toggleNav}>home</a></li>
+                <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""} on:click={toggleNav}>about</a></li>
+                <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""} on:click={toggleNav}>contact</a></li>
+                <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""} on:click={toggleNav}>videos</a></li>
                 {#if showSideNav}
                     <li><a href=" " on:click|preventDefault={showModal}>profile</a></li>
-                    <i on:click={handleProfileClick} on:keydown={handleProfileClick}>&#x2190;</i>
+                    <i on:click={toggleNav} on:keydown={toggleNav}>&#x2190;</i>
                 {/if}
             </ul>
         </div>

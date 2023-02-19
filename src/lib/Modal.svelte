@@ -317,8 +317,15 @@
     }
 @media only screen and (max-width: 600px){
     .modal{
-        margin: 12vh calc( calc( 100vw - 240px ) / 2 ) 0 calc( calc( 100vw - 240px ) / 2 );
-        max-width: 240px;
+        margin: 12vh calc( calc( 100vw - 360px ) / 2 ) 0 calc( calc( 100vw - 360px ) / 2 );
+        max-width: 360px;
+    }
+}
+@media only screen and (max-width: 400px){
+    .modal{
+        margin: 12vh 5% 0 5%;
+        min-width: 240px;
+        width: 90%;
     }
 }
 </style>
