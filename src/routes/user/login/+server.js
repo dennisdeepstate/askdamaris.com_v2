@@ -35,7 +35,7 @@ export async function POST({ request, cookies }) {
         }
 
         const verifyTransporter = await new Promise((resolve) => {
-            transporter.verify(function (info) {
+            transporter.verify(function (err, info) {
                 resolve(info)
             })
         })
