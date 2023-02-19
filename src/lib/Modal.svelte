@@ -374,7 +374,7 @@
             <input name="email" type="email" placeholder="email" bind:value={registerEmail} required/>
             <input name="first_name" type="text" placeholder="first name" bind:value={firstName} required/>
             <input name="last_name" type="text" placeholder="last name" bind:value={lastName} required/>
-            <input name="password" type="text" placeholder="password" bind:value={registerPassword} required/>
+            <input name="password" type="text" placeholder="password" bind:value={registerPassword} autocomplete="new-password" required/>
             <Button title="register" style="cta" />
         </form>
         <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(registerEmail)} style="{!registerSuccess ? "display: none" : ""}">
@@ -417,7 +417,7 @@
             <Button title="send verification code" style="cta" />
         </form>
         <form name="change_password" on:submit|preventDefault={changePassword} style="{!verificationSent ? "display: none" : ""}">
-            <input name="password" type="text" placeholder="password" bind:value={newPassword} required/>
+            <input name="new password" type="text" placeholder="password" bind:value={newPassword} autocomplete="new-password" required/>
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCode} required/>
             <Button title="change password" style="cta" />
         </form>

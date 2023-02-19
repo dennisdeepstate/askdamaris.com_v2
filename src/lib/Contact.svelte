@@ -212,15 +212,15 @@
                 })
                 let success = (await sendContact.json()) === 'ok'
                 if(success){
-                    chatMessages = [...chatMessages, new Mssg(`Thank you, ${selections.find(select => select.title === "name")?.selection}, for contacting us. A member of our team will reach out to you`,undefined,"bot")]  
+                    chatMessages = [...chatMessages, new Mssg(`Thank you, ${selections.find(select => select.title === "name")?.selection}, for contacting us. A member of our team will reach out to you`,undefined,"bot")]
+                    currentMode = firstMessage
+                    currentMode.mssg = "Are you interested in anything else?"
+                    chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
+                    selections = selections.filter(selection => selection.title === "name" || selection.title === "email" || selection.title === "phone") 
                 }else{
                     chatMessages = [...chatMessages, new Mssg(`Unfortunately, we could not send your message. Please refresh the page and try again`,undefined,"bot")]
                 }
-                currentMode = firstMessage
-                currentMode.mssg = "Are you interested in anything else?"
-                chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
                 inputMssg = ""
-                selections = selections.filter(selection => selection.title === "name" || selection.title === "email" || selection.title === "phone")
                 return
             }
             currentMode = modes.find(mode => mode.title === next)

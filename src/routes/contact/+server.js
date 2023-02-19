@@ -61,7 +61,7 @@ export async function POST({ request }) {
     })
 
     if(!verifyTransporter){
-        return new Response(JSON.stringify('fail'),{ status: 200})
+        return new Response(JSON.stringify('fail'),{ status: 500})
     }
 
     await new Promise((resolve, reject) => {
