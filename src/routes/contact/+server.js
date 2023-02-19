@@ -16,7 +16,7 @@ export async function POST({ request }) {
     if(!saveMessage) return new Response(JSON.stringify('fail'),{status: 200})
 
     let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name").selection
-    let intro = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "intro").selection
+    let service = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "service").selection
     let email = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "email").selection.toLowerCase()
     let phone = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "phone").selection
     /**
@@ -34,7 +34,7 @@ export async function POST({ request }) {
     
     let html = `
         <html>
-            <h3 style="color: #5a189a;">${intro}</h3>
+            <h3 style="color: #5a189a;">${service}</h3>
             <h3 style="color: #5a189a;">${name} | phone: ${phone}</h3>
             <table style="border-collapse: collapse; color: #1d1d1d;">
                 <tr>
@@ -48,7 +48,7 @@ export async function POST({ request }) {
     let mailOptions = {
         from: ZOHO_USER,
         to: "info@askdamaris.com",
-        subject: `[GUEST NAME: ${name}] [SERVICE: ${intro}] [${JSON.stringify(saveMessage.insertedId)}]`,
+        subject: `[GUEST NAME: ${name}] [SERVICE: ${service}] [${JSON.stringify(saveMessage.insertedId)}]`,
         replyTo: email,
         text: JSON.stringify(mssg),
         html: html
