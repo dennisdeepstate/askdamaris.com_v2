@@ -30,7 +30,7 @@ export async function POST({ request }) {
         to: user.email,
         subject: `ASKDAMARIS.COM CHANGE PASSWORD REQUEST`,
         text: `your verification code is ${code}. It will expire in 30 minutes`,
-        html: writeEmail("Change Your Password", "a verification code for changing your password", "Use the verification code below to change your password. Please note that thsi code expires after 30 minutes. If you did not request for this, safely ignore this email", code)
+        html: writeEmail("Change Your Password", "a verification code for changing your password", "Use the verification code to change your password. Please note that this code expires after 30 minutes. If you did not request for this, safely ignore this email", code)
     }
 
 
