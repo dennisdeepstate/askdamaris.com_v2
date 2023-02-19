@@ -1,16 +1,17 @@
-import { users, sessions } from "$db/collections"
+import { users, verificationCodes } from "$db/collections"
 import { hex, sha256} from '$lib/js/sha256'
-import { NODE_ENV } from "$env/static/private"
-import { Reply, Session } from "$lib/js/session"
+import { Reply} from "$lib/js/session"
 import { validateInput } from "$lib/js/validateInput"
+import { ZOHO_USER } from "$env/static/private"
+import { writeEmail } from "$lib/js/email"
+import { transporter } from "$mail/nodemailer"
 
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ request, cookies }) {
+export async function POST({ request }) {
 
     let user = await request.json()
     let reply = new Reply(false, [])
-    const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 2)
 
     if(!validateInput("email", user.email)) reply.replies.push("please enter a valid email address")
     if(!validateInput("name", user.firstName)) reply.replies.push("please enter a real first name")
@@ -21,19 +22,38 @@ export async function POST({ request, cookies }) {
     user.password = await hex(await sha256(user.password))
     if(await users.findOne({email: user.email})) return new Response(JSON.stringify(new Reply(false, ['This email is already registered, try to login instead'])),{status: 200})
 
+    user.verified = false
     await users.insertOne(user)
-    const cookieId = crypto.randomUUID()
-    await sessions.insertOne(new Session(cookieId, user.email, request.headers.get('user-agent'), expiryTimeStamp))
+    
+    const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 30)
+    const code = Math.floor(Math.random() * 100000).toString()
 
-    cookies.set('askdamaris_sess', cookieId, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: NODE_ENV === "Prod",
-        maxAge: 60 * 60 * 24 * 2
+    if(await verificationCodes.findOne({email: user.email})){
+        await verificationCodes.updateOne({email: user.email}, { $set : { code: code, expiry: expiryTimeStamp} })
+    }else{
+        await verificationCodes.insertOne({email: user.email, expiry: expiryTimeStamp, code: code})
+    }
+
+    let mailOptions = {
+        from: ZOHO_USER,
+        to: user.email,
+        subject: `ASKDAMARIS.COM verify your email`,
+        text: `your verification code is ${code}. It will expire in 30 minutes`,
+        html: writeEmail("Verify your email address", "a verification code for your askdamaris.com account", "You have successfully created an account with askdamaris.com . Use the verification code below to verify your account. If you did not request for this, safely ignore this email", code)
+    }
+
+    await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error(err)
+                reject(err)
+            } else {
+                resolve(info)
+            }
+        })
     })
-
-    reply = new Reply(true, ["your account has been successfully created"])
+    
+    reply = new Reply(true, ["Your account has been successfully created. We have sent you a verification email."])
     return new Response(JSON.stringify(reply),{status: 200})
 
 }

@@ -18,15 +18,19 @@
     /**
      * @type {boolean}
      */
-    $:showLogin = !user.authenticated
+    let showLogin = !user.authenticated
     /**
      * @type {boolean}
      */
-    $:showRegister = !user.authenticated && !showLogin
+    let showRegister = !user.authenticated && !showLogin
     /**
      * @type {boolean}
      */
     let showProfile = user.authenticated
+     /**
+     * @type {boolean}
+     */
+     let showChangePassword
     /**
      * @type {string}
      */
@@ -67,8 +71,50 @@
      * @type {boolean}
      */
     let loginSuccess
+    /**
+     * @type {string}
+     */
+    let changePasswordEmail
+    /**
+     * @type {boolean}
+     */
+    let verificationSent
+     /**
+     * @type {string[]}
+     */
+    let verificationReplies = []
+    /**
+     * @type {string}
+     */
+    let newPassword
+    /**
+     * @type {string}
+     */
+    let verificationCode
+    /**
+     * @type {boolean}
+     */
+     let passwordChanged
+     /**
+     * @type {string[]}
+     */
+    let changePasswordReplies = []
+
+    /**
+     * @type {string[]}
+     */
+    let verifyEmailReplies = []
+    /**
+     * @type {string}
+     */
+    let verificationCodeForEmail
+    /**
+     * @type {boolean}
+     */
+    let verified
 
    async function createUser(){
+        registerReplies = []
         let form = {
             email: registerEmail,
             firstName: firstName,
@@ -85,13 +131,10 @@
         const message = await reply.json()
         registerSuccess = message.success
         registerReplies = message.replies
-
-        if(registerSuccess) {
-            hideModal()
-            window.location.href = redirectUrl
-        }
    }
+
    async function login(){
+        loginReplies = []
         let form = {
             email: loginEmail,
             password: loginPassword
@@ -106,14 +149,89 @@
         const message = await reply.json()
         loginSuccess = message.success
         loginReplies = message.replies
-
-        if(loginSuccess) {
+        verified = message.replies[0] === "ok"
+        if(verified) {
             hideModal()
             window.location.href = redirectUrl
         }
    }
-   function switchView(){
-        showLogin = !showLogin
+
+   async function forgotPassword(){
+        verificationReplies = []
+        let form = {
+            email: changePasswordEmail
+        }
+        const reply = await fetch(`${PUBLIC_HOST}/user/forgot_password`,{ 
+            method: 'POST',
+            body: JSON.stringify(form),
+            headers:{
+                'content-type': 'application/json'
+            }
+        })
+        const message = await reply.json()
+        verificationSent = message.success
+        verificationReplies = message.replies  
+   }
+
+   async function changePassword(){
+        changePasswordReplies = []
+        let form = {
+            email: changePasswordEmail,
+            password: newPassword,
+            code: verificationCode
+        }
+        const reply = await fetch(`${PUBLIC_HOST}/user/change_password`,{ 
+            method: 'POST',
+            body: JSON.stringify(form),
+            headers:{
+                'content-type': 'application/json'
+            }
+        })
+        const message = await reply.json()
+        passwordChanged = message.success
+        changePasswordReplies = message.replies
+
+        if(passwordChanged) {
+            hideModal()
+            window.location.href = redirectUrl
+        }
+    }
+
+   /**
+     * @param {string} email
+     */
+   async function verifyEmail(email){
+        loginReplies = []
+        registerReplies = []
+        verifyEmailReplies = []
+        let form = {
+            email: email,
+            code: verificationCodeForEmail
+        }
+        const reply = await fetch(`${PUBLIC_HOST}/user/verify_email`,{ 
+            method: 'POST',
+            body: JSON.stringify(form),
+            headers:{
+                'content-type': 'application/json'
+            }
+        })
+        const message = await reply.json()
+        let emailVerified = message.success
+        verifyEmailReplies = message.replies
+
+        if(emailVerified) {
+            hideModal()
+            window.location.href = redirectUrl
+        }
+    }
+
+   /**
+     * @param {string} destination
+     */
+   function switchView(destination){
+        showLogin = destination === "login"
+        showRegister = destination === "register"
+        showChangePassword = destination === "change_password"
    }
 </script>
 <style>
@@ -130,6 +248,7 @@
     .modal{
         background-color: var(--color_white);
         border-radius: var(--border_radius);
+        box-sizing: border-box;
         margin: 12vh calc( calc( 100vw - 400px ) / 2 ) 0 calc( calc( 100vw - 400px ) / 2 );
         max-height: 70vh;
         max-width: 400px;
@@ -137,7 +256,6 @@
         position: fixed;
         overflow-y: auto;
         top: 0;
-        text-align: center;
         width: 90%;
         z-index: 14;
     }
@@ -148,21 +266,34 @@
         animation-timing-function: ease-out;
         display: grid;
     }
+    .login, .register{
+        box-sizing: border-box;
+        display: block;
+        padding: 0 0 12px 0;
+        position: relative;
+        width: 100%;
+    }
     input{
         border: 1px solid var(--color_purple_translucent);
         border-radius: var(--border_radius_secondary);
+        box-sizing: border-box;
         display: block;
         margin: 8px auto;
         padding: 0 25px;
         height: 50px;
-        width: 80%;
+        width: 100%;
+    }
+    .options{
+        display: block;
+        text-align: right;
+        width: 100%;
     }
     h3{
         margin: 8px;
     }
     a{
         font-style: italic;
-        margin: 12px 0;
+        margin: 12px 0 0 0;
         text-transform: lowercase;
     }
     .reply{
@@ -193,46 +324,130 @@
 <div class="backdrop" style={ modal ? "" : "display: none;" } on:click={hideModal} on:keydown={hideModal}>
 </div>
 <div class="modal" style={ modal ? "" : "display: none;" }>
+<!-- Start Login form -->
     <div class="login {showLogin ? "show" : ""}" style={ showLogin ? "" : "display: none;" }>
         <h3>Login</h3>
-        <form name="login" on:submit|preventDefault={login}>
+        <form name="login" on:submit|preventDefault={login} style="{loginSuccess ? "display: none" : ""}">
             <input name="email" type="email" placeholder="email" bind:value={loginEmail}/>
             <input name="password" type="password" placeholder="password" bind:value={loginPassword}/>
-            {#if loginReplies.length > 0}
-            <div class="reply { loginSuccess ? "success" : "error"}">
+            <Button title="login" style="cta" />
+        </form>
+        <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(loginEmail)} style="{!loginSuccess ? "display: none" : ""}">
+            <div class="reply success">
+                <ul>
+                    <li>You successfully created an account with us. We have sent a verification code to {loginEmail}. Enter the code below</li>
+                </ul>
+            </div>
+            <input name="code" type="text" placeholder="verification code" bind:value={verificationCodeForEmail} required/>
+            <Button title="verify" style="cta" />
+        </form>
+        <span class="options">
+            <a on:click|preventDefault={()=>switchView("change_password")} href="/">forgot password?</a>
+            <br />
+            <a on:click|preventDefault={()=>switchView("register")} href="/"> Register instead?</a>
+        </span>
+        {#if loginReplies.length > 0 && !loginSuccess}
+            <div class="reply error">
                 <ul>
                     {#each loginReplies as reply}
                         <li>{ reply }</li>
                     {/each}
                 </ul>
             </div>
-            {/if}
-            <Button title="login" style="cta" />
-        </form>
-        <a on:click|preventDefault={switchView} href="/">Register Instead</a>
+        {/if}
+        {#if verifyEmailReplies.length > 0 && showLogin}
+            <div class="reply error">
+                <ul>
+                    {#each verifyEmailReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
+            </div>
+        {/if}
     </div>
+<!-- End Login form -->
+<!-- Start Register form -->
     <div class="register {showRegister ? "show" : ""}" style={ showRegister ? "" : "display: none;" }>
         <h3>Register</h3>
-        <form name="register" on:submit|preventDefault={createUser}>
+        <form name="register" on:submit|preventDefault={createUser} style="{registerSuccess ? "display: none" : ""}">
             <input name="email" type="email" placeholder="email" bind:value={registerEmail} required/>
             <input name="first_name" type="text" placeholder="first name" bind:value={firstName} required/>
             <input name="last_name" type="text" placeholder="last name" bind:value={lastName} required/>
             <input name="password" type="text" placeholder="password" bind:value={registerPassword} required/>
-            {#if registerReplies.length > 0}
-            <div class="reply { registerSuccess ? "success" : "error"}">
+            <Button title="register" style="cta" />
+        </form>
+        <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(registerEmail)} style="{!registerSuccess ? "display: none" : ""}">
+            <div class="reply success">
+                <ul>
+                    <li>You successfully created an account with us. We have sent a verification code to {registerEmail}. Enter the code below</li>
+                </ul>
+            </div>
+            <input name="code" type="text" placeholder="verification code" bind:value={verificationCodeForEmail} required/>
+            <Button title="verify" style="cta" />
+        </form>
+        <span class="options">
+            <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+        </span>
+        {#if registerReplies.length > 0 && !registerSuccess}
+            <div class="reply error">
                 <ul>
                     {#each registerReplies as reply}
                         <li>{ reply }</li>
                     {/each}
                 </ul>
             </div>
-            {/if}
-            <Button title="register" style="cta" />
-        </form>
-        <a on:click|preventDefault={switchView} href="/">Login Instead</a>
+        {/if}
+        {#if verifyEmailReplies.length > 0 && showRegister}
+            <div class="reply error">
+                <ul>
+                    {#each verifyEmailReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
+            </div>
+        {/if}
     </div>
+<!-- End Register form -->
+<!-- Start Change Password form -->
+    <div class="password {showChangePassword ? "show" : ""}" style={ showChangePassword ? "" : "display: none;" }>
+        <h3>Forgot Password</h3>
+        <form name="forgot_password" on:submit|preventDefault={forgotPassword} style="{verificationSent ? "display: none" : ""}">
+            <input name="email" type="email" placeholder="email" bind:value={changePasswordEmail} required/>
+            <Button title="send verification code" style="cta" />
+        </form>
+        <form name="change_password" on:submit|preventDefault={changePassword} style="{!verificationSent ? "display: none" : ""}">
+            <input name="password" type="text" placeholder="password" bind:value={newPassword} required/>
+            <input name="code" type="text" placeholder="verification code" bind:value={verificationCode} required/>
+            <Button title="change password" style="cta" />
+        </form>
+        <span class="options">
+            <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+        </span>
+        {#if verificationReplies.length > 0 && !verificationSent}
+            <div class="reply error">
+                <ul>
+                    {#each verificationReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
+            </div>
+        {/if}
+        {#if changePasswordReplies.length > 0 && !passwordChanged}
+            <div class="reply error">
+                <ul>
+                    {#each changePasswordReplies as reply}
+                        <li>{ reply }</li>
+                    {/each}
+                </ul>
+            </div>
+        {/if}
+    </div>
+<!-- End Change Password form -->
+<!-- Start Profile form -->
     <div class="profile {showProfile ? "show" : ""}" style={ showProfile ? "" : "display: none;" }>
         <h3>{ user.firstName } { user.lastName }</h3>
-        <a href="{PUBLIC_HOST}/user/logout">logout</a>
+        <span class="options">
+            <a href="{PUBLIC_HOST}/user/logout">logout</a>
+        </span>
     </div>
 </div>

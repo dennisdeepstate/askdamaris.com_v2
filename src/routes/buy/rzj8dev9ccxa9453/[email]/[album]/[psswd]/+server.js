@@ -26,7 +26,7 @@ export async function POST({ params, request }) {
 
     if(amountDue !== amountPaid.value) return new Response(JSON.stringify('fail'),{status: 200})
 
-    await users.updateOne({email: email}, { $push: { albums: albumName } })
+    await users.updateOne({email: email}, { $push: { albums: { name: albumName } } })
 
     return new Response(JSON.stringify('ok'),{status: 200})
 

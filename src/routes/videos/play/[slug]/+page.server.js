@@ -23,17 +23,17 @@ export async function load({ params, locals}){
     }
 
     if(locals.user.email) {
-        rate = JSON.stringify( (video[0].ratings.filter((/** @type {{ email: string | null; }} */ rating) => rating.email === locals.user.email))[0].rate )
+        rate = (video[0].ratings.filter((/** @type {{ email: string | null; }} */ rating) => rating.email === locals.user.email))[0]
         ratingLocked = false
     }
     const ratings = video[0].ratings.map((/** @type {{ rate: number; }} */ rating) => rating.rate)
     const rating = (ratings.reduce((/** @type {number} */ a,/** @type {number} */ b)=> a+ b) / ratings.length).toFixed(1)
     const playToken = await hex(await sha256(`${BUNNY_EMBED_TOKEN}${bunnyId}${expiryTimeStamp}`))
-
+    
     return{
         bunnyId: bunnyId,
         title: video[0].title,
-        rate: rate,
+        rate: rate ? JSON.stringify( rate.rate ): "0",
         rating: rating,
         ratingLocked: ratingLocked,
         album: album[0].name,

@@ -86,7 +86,7 @@
             buttons: [],
             type: "phone",
             next:() => {
-                let x = selections.find(select => select.title === "intro")?.selection
+                let x = selections.find(select => select.title === "service")?.selection
                 if(x === "leaving a message") return "message"
                 if(x === "speaking engagement") return "activity"
                 if(x === "corporate training" || x === "individual consultation") return "objectives"
@@ -108,7 +108,7 @@
             buttons: [],
             type: "message",
             next: () => {
-                if(selections.find(select => select.title === "intro")?.selection === "corporate training") return "date"
+                if(selections.find(select => select.title === "service")?.selection === "corporate training") return "date"
                 return "end"
             }
         },
@@ -159,7 +159,7 @@
      */
     let selections = []
     let firstMessage = {
-        title: "intro",
+        title: "service",
         mssg: "What are you interested in?",
         errorMssg: "please select a valid option",
         buttons: ["leaving a message", "corporate training", "individual consultation", "speaking engagement"],
