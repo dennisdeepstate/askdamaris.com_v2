@@ -23,7 +23,7 @@ export async function POST({ request }) {
         await verificationCodes.insertOne({email: user.email, expiry: expiryTimeStamp, code: code})
     }
 
-    reply = new Reply(reply.success, [`verification code sent to ${user.email}`])
+    reply = new Reply(true, [`a verification code has been sent to ${user.email}`])
 
     let mailOptions = {
         from: ZOHO_USER,
