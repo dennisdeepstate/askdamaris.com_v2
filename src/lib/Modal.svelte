@@ -419,7 +419,7 @@
             <Button title="send verification code" style="cta" />
         </form>
         <form name="change_password" on:submit|preventDefault={changePassword} style="{!verificationSent ? "display: none" : ""}">
-            <input name="new password" type="text" placeholder="password" bind:value={newPassword} autocomplete="new-password" required/>
+            <input name="new_password" type="text" placeholder="new password" bind:value={newPassword} autocomplete="new-password" required/>
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCode} required/>
             <Button title="change password" style="cta" />
         </form>
