@@ -4,6 +4,7 @@
     import { Modal } from "$lib/js/modalStore"
     import { hideModal } from "$lib/js/showModal";
     import { page } from "$app/stores"
+    import { validateInput } from "./js/validateInput";
 
     let redirectUrl = `${PUBLIC_HOST}/videos`
     /**
@@ -121,6 +122,10 @@
             lastName: lastName,
             password: registerPassword
         }
+        if(!form.email || !form.firstName || !form.lastName || !form.password){
+            registerReplies.push("please fill out all the fields.")
+            return
+        }
         const reply = await fetch(`${PUBLIC_HOST}/user/register`,{ 
             method: 'POST',
             body: JSON.stringify(form),
@@ -138,6 +143,10 @@
         let form = {
             email: loginEmail,
             password: loginPassword
+        }
+        if(!form.email || !form.password){
+            loginReplies.push("please fill out all the fields.")
+            return
         }
         const reply = await fetch(`${PUBLIC_HOST}/user/login`,{ 
             method: 'POST',
@@ -161,6 +170,10 @@
         let form = {
             email: changePasswordEmail
         }
+        if(!form.email){
+            verificationReplies.push("please fill out all the fields.")
+            return
+        }
         const reply = await fetch(`${PUBLIC_HOST}/user/forgot_password`,{ 
             method: 'POST',
             body: JSON.stringify(form),
@@ -179,6 +192,10 @@
             email: changePasswordEmail,
             password: newPassword,
             code: verificationCode
+        }
+        if(!form.email || !form.password || !form.code){
+            changePasswordReplies.push("please fill out all the fields.")
+            return
         }
         const reply = await fetch(`${PUBLIC_HOST}/user/change_password`,{ 
             method: 'POST',
@@ -207,6 +224,10 @@
         let form = {
             email: email,
             code: verificationCodeForEmail
+        }
+        if(!form.email || !form.code){
+            verifyEmailReplies.push("please fill out all the fields.")
+            return
         }
         const reply = await fetch(`${PUBLIC_HOST}/user/verify_email`,{ 
             method: 'POST',
@@ -293,8 +314,7 @@
     }
     a{
         display: inline-block;
-        font-style: italic;
-        margin: 4px 0 0 0;
+        margin: 8px 0 0 0;
         text-transform: lowercase;
     }
     .reply{
@@ -336,8 +356,8 @@
     <div class="login {showLogin ? "show" : ""}" style={ showLogin ? "" : "display: none;" }>
         <h3>Login</h3>
         <form name="login" on:submit|preventDefault={login} style="{loginSuccess ? "display: none" : ""}">
-            <input name="email" type="email" placeholder="email" bind:value={loginEmail}/>
-            <input name="password" type="password" placeholder="password" bind:value={loginPassword}/>
+            <input name="email" type="email" placeholder="email" bind:value={loginEmail} required/>
+            <input name="password" type="password" placeholder="password" bind:value={loginPassword} required/>
             <Button title="login" style="cta" />
         </form>
         <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(loginEmail)} style="{!loginSuccess ? "display: none" : ""}">
@@ -426,6 +446,11 @@
             <Button title="send verification code" style="cta" />
         </form>
         <form name="change_password" on:submit|preventDefault={changePassword} style="{!verificationSent ? "display: none" : ""}">
+            <div class="reply success">
+                <ul>
+                    <li>We have sent a verification code to {changePasswordEmail}. You can now change your password.</li>
+                </ul>
+            </div>
             <input name="new_password" type="text" placeholder="new password" bind:value={newPassword} autocomplete="new-password" required/>
             <input name="code" type="text" placeholder="verification code" bind:value={verificationCode} required/>
             <Button title="change password" style="cta" />

@@ -3,6 +3,7 @@ import { albums } from "$db/collections"
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request, locals }) {
     let rating = await request.json()
+    if(!rating.rate || !rating.bunny_id) return new Response("please fill out all the fields", {status: 403})
 
     const updateRate = await albums.updateOne(
         {

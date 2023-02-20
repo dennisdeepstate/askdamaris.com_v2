@@ -13,16 +13,17 @@ export async function POST({ request }) {
     let user = await request.json()
     let reply = new Reply(false, [])
 
-    user.email = user.email.toLowerCase()
+    if(!user.email || !user.firstName || !user.lastName || !user.password) return new Response(JSON.stringify(new Reply(false, ['Please fill out all the fields'])),{status: 403})
 
+    user.email = user.email.toLowerCase()
     if(!validateInput("email", user.email)) reply.replies.push("please enter a valid email address")
     if(!validateInput("name", user.firstName)) reply.replies.push("please enter a real first name")
     if(!validateInput("name", user.lastName)) reply.replies.push("please enter a real last name")
     if(!validateInput("password", user.password)) reply.replies.push("password must be atleast 8 characters long. Must also contain special characters, numbers, small and capital letters")
 
-    if(reply.replies.length > 0) return new Response(JSON.stringify(reply),{status: 200})
+    if(reply.replies.length > 0) return new Response(JSON.stringify(reply),{status: 403})
     user.password = await hex(await sha256(user.password))
-    if(await users.findOne({email: user.email})) return new Response(JSON.stringify(new Reply(false, ['This email is already registered, try to login instead'])),{status: 200})
+    if(await users.findOne({email: user.email})) return new Response(JSON.stringify(new Reply(false, ['This email is already registered, try to login instead'])),{status: 403})
 
     user.verified = false
     await users.insertOne(user)
@@ -51,7 +52,7 @@ export async function POST({ request }) {
     })
 
     if(!verifyTransporter){
-        return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 200})
+        return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 500})
     }
 
     await new Promise((resolve, reject) => {

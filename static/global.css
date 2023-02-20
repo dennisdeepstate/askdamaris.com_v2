@@ -27,7 +27,7 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 html > *, body{
-  background-color: var(--color_offwhite);
+  background-color: var(--color_white);
   box-sizing: border-box;
   font-family: 'Urbanist', sans-serif;
   font-weight: 400;
@@ -37,8 +37,11 @@ html > *, body{
 h1, h2, h3, h4, h5{
   margin: 0;
 }
-h2, h3, h4{
+h3, h4{
   color: var(--color_purple_main);
+}
+h2{
+  color: var(--color_blackish);
 }
 h1{
   font-size: 60px;
@@ -184,7 +187,7 @@ a:hover{
     font-size: 48px;
   }
   h2{
-    font-size: 24px;
+    font-size: 30px;
   }
   h3{
     font-size: 20px;

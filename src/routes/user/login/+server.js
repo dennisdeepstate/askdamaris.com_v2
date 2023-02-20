@@ -10,13 +10,14 @@ export async function POST({ request, cookies }) {
 
     let user = await request.json()
     let reply = new Reply(false, [])
+    if(!user.email || !user.password) return new Response(JSON.stringify(new Reply(false, ['Please fill out all the fields.'])),{status: 403})
     const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 2)
 
     user.email = user.email.toLowerCase()
     user.password = await hex(await sha256(user.password))
     
     const findUser = await users.findOne({email: user.email})
-    if(!findUser || findUser.password !== user.password) return new Response(JSON.stringify(new Reply(false, ['the email and password combination you entered do not match'])),{status: 200})
+    if(!findUser || findUser.password !== user.password) return new Response(JSON.stringify(new Reply(false, ['the email and password combination you entered do not match'])),{status: 403})
     if(!findUser.verified) {
         const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 30)
         const code = Math.floor(Math.random() * 100000).toString()
@@ -41,7 +42,7 @@ export async function POST({ request, cookies }) {
         })
 
         if(!verifyTransporter){
-            return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 200})
+            return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 500})
         }
 
         await new Promise((resolve, reject) => {

@@ -66,7 +66,7 @@
         {
             title: "name",
             mssg: "What is your full name?",
-            errorMssg: "the email you entered is not a valid email address. Please try again",
+            errorMssg: "Please enter a valid name",
             buttons: [],
             type: "name",
             next:()=>"email"
@@ -186,7 +186,7 @@
     }
 
     async function sendMessage(){
-        if(!currentMode) return
+        if(!currentMode || !inputMssg) return
         chatMessages = [...chatMessages, new Mssg(inputMssg,undefined,"user")]
         async function botReply(){
             if(!currentMode) return
@@ -250,7 +250,7 @@
 </script>
 <style>
     .chatbox{
-        background-color: var(--color_blackish_translucent);
+        background-color: var(--color_offwhite);
         border-radius: var(--border_radius);
         height: 480px;
         margin: 0 auto 40px auto;

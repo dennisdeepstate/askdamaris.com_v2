@@ -7,13 +7,14 @@ import { transporter } from "$mail/nodemailer"
 export async function POST({ request }) {
 
     let mssg = await request.json()
+    if(!mssg.name || !mssg.service || !mssg.email || !mssg.phone) return new Response(JSON.stringify('fail'),{status: 403})
     
     mssg.forEach((/** @type {{ title: string; selection: string; }} */ obj) => {
         if(!validateInput(obj.title, obj.selection)) return new Response(JSON.stringify('fail'),{status: 403})
     })
 
     let saveMessage = await messages.insertOne({mssg})
-    if(!saveMessage) return new Response(JSON.stringify('fail'),{status: 200})
+    if(!saveMessage) return new Response(JSON.stringify('fail'),{status: 500})
 
     let name = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "name").selection
     let service = mssg.find((/** @type {{ title: string; }} */ obj) => obj.title === "service").selection

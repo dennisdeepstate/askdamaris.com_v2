@@ -8,6 +8,19 @@
      export let album
 </script>
 <style>
+    .background_photo{
+        position: absolute;
+        z-index: -1;
+    }
+    .background_photo > img{
+        border: 4px solid var(--color_white);
+        border-radius: var(--border_radius);
+        margin: 0 -10px -40px 0;
+        height: 240px;
+        object-fit: cover;
+        overflow: hidden;
+        width: 240px;
+    }
     #hero{
         align-items: flex-end;
         box-sizing: border-box;
@@ -17,6 +30,7 @@
         margin-top: 80px;
         max-height: 720px;
         min-height: 540px;
+        overflow: hidden;
         text-align: center;
         width: 100%;
     }
@@ -51,6 +65,9 @@
 </style>
 <section id="hero">
     <div class="hero_text">
+        <!-- <div class="background_photo" style="left: -120px; top: -36px; transform: rotateZ(5deg)"><img src="workshop.jpg" alt="p" /></div>
+        <div class="background_photo" style="right: -180px; top: 90px; transform: rotateZ(-6deg)"><img src="sessions.jpg" alt="p" /></div>
+        <div class="background_photo" style="left: -180px; top: 120px; transform: rotateZ(-2deg)"><img src="sessions.jpg" alt="p" /></div> -->
         <h2>reach your full potential</h2>
         <p>Welcome to ask damaris, a platform  designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
         <Button style="cta" title="learn and grow" on:modal={showModal}/>

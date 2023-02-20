@@ -75,6 +75,10 @@ export async function POST({ request, locals }) {
         mssg: "an error occured on the server"
     }
     const transaction = await request.json()
+    if(!transaction.album || !transaction.phone){
+        response.mssg = "please fill out all the fields"
+        return new Response(JSON.stringify(response),{status: 403})
+    }
     const album = await albums.findOne({name: transaction.album})
     if(!locals.user.email){
         response.mssg = "Please login"

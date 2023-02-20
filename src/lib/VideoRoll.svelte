@@ -91,6 +91,7 @@
     .price{
         margin: 0 0 10px 0;
     }
+
     #video_roll{
         height: 270px;
         padding: 0;
@@ -157,6 +158,7 @@
 }
 </style>
 <svelte:window bind:innerWidth={viewWidth} on:keydown={(e) => handleKeyDown(e)} bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
+
 <h3>{ albumName }</h3>
 <a href="{PUBLIC_HOST}/buy/{albumName}" class="price">available for KES {albumPrice}</a>
 <div id="video_roll" bind:this={roll}>

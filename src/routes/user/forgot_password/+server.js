@@ -8,11 +8,12 @@ import { transporter } from "$mail/nodemailer"
 export async function POST({ request }) {
 
     let user = await request.json()
-    let reply = new Reply(false, [])
-
+    if(!user.email) return new Response(JSON.stringify(new Reply(false, ['Please fill out all the fields.'])),{status: 403})
     user.email = user.email.toLowerCase()
+
+    let reply = new Reply(false, [])
     const findUser = await users.findOne({email: user.email})
-    if(!findUser) return new Response(JSON.stringify(new Reply(false, ['the email you entered is not registered on askdamaris.com'])),{status: 200})
+    if(!findUser) return new Response(JSON.stringify(new Reply(false, ['the email you entered is not registered on askdamaris.com'])),{status: 403})
 
     const expiryTimeStamp = Math.floor(Date.now() / 1000) + (60 * 30)
     const code = Math.floor(Math.random() * 100000).toString()
@@ -41,7 +42,7 @@ export async function POST({ request }) {
     })
 
     if(!verifyTransporter){
-        return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 200})
+        return new Response(JSON.stringify(new Reply(false, ['an error occured on the server. please try again later'])),{ status: 500})
     }
 
     await new Promise((resolve, reject) => {

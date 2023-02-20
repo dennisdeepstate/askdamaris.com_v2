@@ -17,7 +17,7 @@
      * @type {boolean}
      */
     let showSideNav
-    $: sideNavX = tweened(-240, {
+    $: sideNavX = tweened(-300, {
         duration: 300,
         easing: cubicInOut
     })
@@ -25,12 +25,12 @@
         if(windowWidth > 600) sideNavX.set(0, {duration: 0})
     })
     function handleResize(){
-        if(windowWidth <= 600) sideNavX.set(-240, {duration: 0})
+        if(windowWidth <= 600) sideNavX.set(-300, {duration: 0})
     }
     function toggleNav(){
         if(windowWidth <= 600){
             showSideNav = !showSideNav
-            sideNavX.set(showSideNav ? 0 : -240)
+            sideNavX.set(showSideNav ? 0 : -300)
             return
         }
     }
@@ -107,7 +107,7 @@
         grid-template-columns: 1fr 1fr 1fr; 
     }
     ul{
-        background-color: var(--color_offwhite);
+        background-color: var(--color_white);
         box-sizing: border-box;
         height: 100vh;
         padding: 40px;
@@ -115,11 +115,11 @@
         text-align: center;
         left: 0;
         top: 0;
-        width: 240px;
+        width: 300px;
     }
     ul > li{
         display: block;
-        margin: 12px auto;
+        margin: 24px auto 12px auto;
     }
     a.active{
         text-decoration: underline;
@@ -133,7 +133,7 @@
         cursor: pointer;
         font-style: normal;
         font-size: 24px;
-        padding: 4px 12px;
+        padding: 11px 12px;
         position: absolute;
         left: 0;
         text-align: left;
