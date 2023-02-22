@@ -37,10 +37,10 @@ html > *, body{
 h1, h2, h3, h4, h5{
   margin: 0;
 }
-h3, h4{
+h2, h4{
   color: var(--color_purple_main);
 }
-h2{
+h3{
   color: var(--color_blackish);
 }
 h1{

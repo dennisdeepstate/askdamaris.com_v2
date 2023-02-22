@@ -2,10 +2,12 @@ class Reply{
     /**
      * @param {boolean} success
      * @param {String []} replies
+     * @param {any} payload
      */
-    constructor(success, replies){
+    constructor(success, replies, payload = undefined){
         this.success = success,
-        this.replies = replies
+        this.replies = replies,
+        this.payload = payload
     }
 }
 class Session{

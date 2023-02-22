@@ -2,13 +2,32 @@
     import Button from "$lib/Button.svelte"
     import VideoRoll from "$lib/VideoRoll.svelte"
     import { showModal } from "$lib/js/showModal"
+    import { FrontEndUser } from "$lib/js/userStore";
+    import { PUBLIC_HOST } from "$env/static/public";
     /**
      * @type {{ videos: []; name: string; price: number; }}
      */
-     export let album
+    export let album
+    /**
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
+     */
+    let user
+    FrontEndUser.subscribe((value) =>  { user = value })
+    function handleCTA(){
+        /**
+         * @type {{premium: boolean; bunny_id: string;} []}
+         */
+        let freeVideos = []
+        freeVideos = album.videos.filter(/**@param {{premium: boolean;}} video*/ video => !video.premium)
+        if(!user.email || !user.firstName || !user.lastName){
+            showModal()
+            return
+        }
+        window.location.href = freeVideos.length > 0 ? `${PUBLIC_HOST}/videos/play/${freeVideos[0].bunny_id}` : `${PUBLIC_HOST}/videos/`
+    }
 </script>
 <style>
-    .background_photo{
+    /* .background_photo{
         position: absolute;
         z-index: -1;
     }
@@ -20,7 +39,7 @@
         object-fit: cover;
         overflow: hidden;
         width: 240px;
-    }
+    } */
     #hero{
         align-items: flex-end;
         box-sizing: border-box;
@@ -70,7 +89,7 @@
         <div class="background_photo" style="left: -180px; top: 120px; transform: rotateZ(-2deg)"><img src="sessions.jpg" alt="p" /></div> -->
         <h2>reach your full potential</h2>
         <p>Welcome to ask damaris, a platform  designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
-        <Button style="cta" title="learn and grow" on:modal={showModal}/>
+        <Button style="cta" title="learn and grow" on:modal={handleCTA}/>
     </div>
     <div class="roll">
         <VideoRoll videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>

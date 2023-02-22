@@ -1,14 +1,17 @@
 <script>
-    import { afterUpdate, onMount } from "svelte"
+    import { onMount } from "svelte"
     import { validateInput } from "$lib/js/validateInput"
-    import { PUBLIC_HOST } from "$env/static/public";
+    import { PUBLIC_HOST } from "$env/static/public"
+    import { FrontEndUser } from "$lib/js/userStore"
 
     function mssgTime(){
         return new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
     }
-    onMount(() => {
-        contactOffset = mssgBox.offsetTop - windowHeight
-    })
+    /**
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
+     */
+    let user
+    FrontEndUser.subscribe((value) =>  { user = value })
     /**
      * @type {number}
      */
@@ -58,7 +61,7 @@
     /**
      * @type {Mssg []}
      */
-    let chatMessages = [new Mssg ("hi there", undefined,"bot")]
+    let chatMessages = []
     /**
      * @type {{title: string; mssg: string; errorMssg: string; buttons: string [], type: string, next: function} []}
      */
@@ -154,37 +157,58 @@
         }
         
     ]
-    /**
-     * @type {{ title: string; selection: string;}[]}
-     */
-    let selections = []
+    onMount(() => {
+        contactOffset = mssgBox.offsetTop - windowHeight
+    })
     let firstMessage = {
         title: "service",
-        mssg: "What are you interested in?",
+        mssg: "Hi there, What are you interested in?",
         errorMssg: "please select a valid option",
         buttons: ["leaving a message", "corporate training", "individual consultation", "speaking engagement"],
         type: "message",
         next: (/** @type {string} */ input) => {
-            if(!selections.find(select => select.title === "email")) return "name"
+            if(!selections.find(select => select.title === "name")) return "name"
+            if(!selections.find(select => select.title === "email")) return "email"
+            if(!selections.find(select => select.title === "phone")) return "phone"
             if(input === "leaving a message") return "message"
             if(input === "speaking engagement") return "activity"
             if(input === "corporate training" || input === "individual consultation") return "objectives"
             return "end"
-        },
+        }
+    }
+    async function scrollToBottomOfChat(){
+        await new Promise((resolve, reject) => { resolve("") })
+        if(mssgBox)mssgBox.scroll({ top: mssgBox.scrollHeight, behavior: 'smooth' })
     }
     /**
      * @type {{title: String; mssg: String; errorMssg: String; buttons: String[]; type: string; next: function } | undefined}
      */
     let currentMode = firstMessage
-
-    $: if(contactOffset < scroll - ( windowHeight * 0.3 ) && chatMessages.length <= 1){
+    function userHasLoggedIn(){
+        let part = selections ? selections : []
+        if(!user.email || !user.firstName || !user.lastName) return part
+        part = part.filter(selection => selection.title !== 'email' && selection.title !== 'name')
+        part.push({title: 'email', selection: user.email})
+        part.push({title: 'name', selection: `${user.firstName} ${user.lastName}`})
+        firstMessage.mssg = `Hi ${user.firstName} what service are you interested in today?`
+        if(chatMessages.length > 0) chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
+        scrollToBottomOfChat()
+        return part
+    }
+    function userHasLoggedOut(){
+        currentMode = firstMessage
+        firstMessage.mssg = `Hi there, What service are you interested in today?`
+        if(chatMessages.length > 0) chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
+        scrollToBottomOfChat()
+        return []
+    }
+    /**
+     * @type {{ title: string; selection: string;}[]}
+     */
+    $: selections = (user.email && user.firstName && user.lastName) ? userHasLoggedIn() : userHasLoggedOut()
+    $: if(contactOffset < scroll - ( windowHeight * 0.3 ) && chatMessages.length < 1){
         chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
     }
-
-    async function scrollToBottomOfChat(){
-        mssgBox.scroll({ top: mssgBox.scrollHeight, behavior: 'smooth' });
-    }
-
     async function sendMessage(){
         if(!currentMode || !inputMssg) return
         chatMessages = [...chatMessages, new Mssg(inputMssg,undefined,"user")]

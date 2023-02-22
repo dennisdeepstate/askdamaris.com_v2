@@ -24,7 +24,7 @@
     /**
      * @type {boolean}
      */
-    export let ratingLocked
+    export let userCanRate
     /**
      * @type {string}
      */
@@ -36,7 +36,7 @@
     /**
      * @type {any}
      */
-    export let rate 
+    export let userRating 
     /**
      * @param {string} link
      */
@@ -47,7 +47,7 @@
      * @param {number} rate
      */
     async function handleRadioClick(rate){
-        if(ratingLocked) {
+        if(!userCanRate) {
             showModal()
             return
         }
@@ -218,15 +218,15 @@
         <h3>{ title } | {albumName}</h3>
         <div class="rate_container">
             <div class="rate">
-                <input type="radio" name="rate" id="rate-5" value="5" bind:group={rate} on:click={() => handleRadioClick(5)}/>
+                <input type="radio" name="rate" id="rate-5" value="5" bind:group={userRating} on:click={() => handleRadioClick(5)}/>
                 <label for="rate-5" class="icofont-heart"></label>
-                <input type="radio" name="rate" id="rate-4" value="4" bind:group={rate} on:click={() => handleRadioClick(4)}/>
+                <input type="radio" name="rate" id="rate-4" value="4" bind:group={userRating} on:click={() => handleRadioClick(4)}/>
                 <label for="rate-4" class="icofont-heart"></label>
-                <input type="radio" name="rate" id="rate-3" value="3" bind:group={rate} on:click={() => handleRadioClick(3)}/>
+                <input type="radio" name="rate" id="rate-3" value="3" bind:group={userRating} on:click={() => handleRadioClick(3)}/>
                 <label for="rate-3" class="icofont-heart"></label>
-                <input type="radio" name="rate" id="rate-2" value="2" bind:group={rate} on:click={() => handleRadioClick(2)}/>
+                <input type="radio" name="rate" id="rate-2" value="2" bind:group={userRating} on:click={() => handleRadioClick(2)}/>
                 <label for="rate-2" class="icofont-heart"></label>
-                <input type="radio" name="rate" id="rate-1" value="1" bind:group={rate} on:click={() => handleRadioClick(1)}/>
+                <input type="radio" name="rate" id="rate-1" value="1" bind:group={userRating} on:click={() => handleRadioClick(1)}/>
                 <label for="rate-1" class="icofont-heart"></label>
             </div>
         </div>

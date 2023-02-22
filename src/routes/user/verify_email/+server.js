@@ -33,7 +33,7 @@ export async function POST({ request, cookies }) {
         maxAge: 60 * 60 * 24 * 2
     })
 
-    reply = new Reply(true, [`successfully logged in`])
+    reply = new Reply(true, [`successfully logged in`], {email: findUser.email, firstName: findUser.firstName, lastName: findUser.lastName})
     return new Response(JSON.stringify(reply),{ status: 200})
 
 }

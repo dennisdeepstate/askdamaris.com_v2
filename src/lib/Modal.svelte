@@ -2,15 +2,19 @@
     import { PUBLIC_HOST } from "$env/static/public"
     import Button from "$lib/Button.svelte"
     import { Modal } from "$lib/js/modalStore"
-    import { hideModal } from "$lib/js/showModal";
-    import { page } from "$app/stores"
-    import { validateInput } from "./js/validateInput";
+    import { hideModal } from "$lib/js/showModal"
+    import { loginFrontEndUser, logoutFrontEndUser } from "./js/loginUser"
+    import { FrontEndUser } from "./js/userStore"
 
-    let redirectUrl = `${PUBLIC_HOST}/videos`
-    /**
-     * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
+   /**
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
      */
-    let user = $page.data.user
+    let user
+    FrontEndUser.subscribe((value) =>  { user = value })
+    /**
+     * @type {boolean}
+     */
+    $: userIsAuthenticated = user.email && user.firstName && user.lastName ? true : false
     /**
      * @type {boolean}
      */
@@ -19,19 +23,19 @@
     /**
      * @type {boolean}
      */
-    let showLogin = !user.authenticated
+    $: showLogin = !userIsAuthenticated
     /**
      * @type {boolean}
      */
-    let showRegister = !user.authenticated && !showLogin
+    $: showRegister = !userIsAuthenticated && !showLogin && !showChangePassword
     /**
      * @type {boolean}
      */
-    let showProfile = user.authenticated
+    $: showProfile = userIsAuthenticated
      /**
      * @type {boolean}
      */
-     let showChangePassword
+    let showChangePassword
     /**
      * @type {string}
      */
@@ -158,10 +162,10 @@
         const message = await reply.json()
         loginSuccess = message.success
         loginReplies = message.replies
-        verified = message.replies[0] === "ok"
+        verified = loginReplies[0] === "ok"
         if(verified) {
-            hideModal()
-            window.location.href = redirectUrl
+            let frontEndUser = message.payload
+            loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
         }
    }
 
@@ -209,8 +213,8 @@
         changePasswordReplies = message.replies
 
         if(passwordChanged) {
-            hideModal()
-            window.location.href = redirectUrl
+            let frontEndUser = message.payload
+            loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
         }
     }
 
@@ -241,18 +245,29 @@
         verifyEmailReplies = message.replies
 
         if(emailVerified) {
-            hideModal()
-            window.location.href = redirectUrl
+            let frontEndUser = message.payload
+            loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
         }
     }
 
    /**
      * @param {string} destination
-     */
+    */
    function switchView(destination){
         showLogin = destination === "login"
         showRegister = destination === "register"
         showChangePassword = destination === "change_password"
+   }
+   async function logoutUser(){
+        await logoutFrontEndUser()
+        loginSuccess = false
+        loginReplies = []
+        verifyEmailReplies = []
+        registerSuccess = false
+        registerReplies = []
+        verificationSent = false
+        verificationReplies = []
+        showChangePassword = false
    }
 </script>
 <style>
@@ -360,7 +375,7 @@
             <input name="password" type="password" placeholder="password" bind:value={loginPassword} required/>
             <Button title="login" style="cta" />
         </form>
-        <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(loginEmail)} style="{!loginSuccess ? "display: none" : ""}">
+        <form name="verify_email" on:submit|preventDefault={()=>verifyEmail(loginEmail)} style="{!loginSuccess || verified ? "display: none" : ""}">
             <div class="reply success">
                 <ul>
                     <li>You successfully created an account with us. We have sent a verification code to {loginEmail}. Enter the code below</li>
@@ -484,7 +499,7 @@
     <div class="profile {showProfile ? "show" : ""}" style={ showProfile ? "" : "display: none;" }>
         <h3>{ user.firstName } { user.lastName }</h3>
         <div class="options">
-            <a href="{PUBLIC_HOST}/user/logout">logout</a>
+            <a href="{PUBLIC_HOST}/user/logout" on:click|preventDefault={logoutUser}>logout</a>
         </div>
     </div>
 </div>

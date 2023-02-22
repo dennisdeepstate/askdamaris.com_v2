@@ -68,7 +68,7 @@ export async function POST({ request, cookies }) {
         maxAge: 60 * 60 * 24 * 2
     })
 
-    reply = new Reply(true, ["ok"])
+    reply = new Reply(true, ["ok"], {email: findUser.email, firstName: findUser.firstName, lastName: findUser.lastName})
     return new Response(JSON.stringify(reply),{ status: 200})
 
 }

@@ -7,7 +7,7 @@ import { hex, sha256} from '$lib/js/sha256'
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params, locals}){
     let rate
-    let ratingLocked = true
+    let userCanRate
     const expiryTimeStamp = Math.floor(Date.now() / 1000) + 43200
     const bunnyId = params.slug
     const album = await albums.find({ "videos.bunny_id":  bunnyId }).toArray()
@@ -24,7 +24,7 @@ export async function load({ params, locals}){
 
     if(locals.user.email) {
         rate = (video[0].ratings.filter((/** @type {{ email: string | null; }} */ rating) => rating.email === locals.user.email))[0]
-        ratingLocked = false
+        userCanRate = true
     }
     const ratings = video[0].ratings.map((/** @type {{ rate: number; }} */ rating) => rating.rate)
     const rating = (ratings.reduce((/** @type {number} */ a,/** @type {number} */ b)=> a+ b) / ratings.length).toFixed(1)
@@ -33,9 +33,9 @@ export async function load({ params, locals}){
     return{
         bunnyId: bunnyId,
         title: video[0].title,
-        rate: rate ? JSON.stringify( rate.rate ): "0",
+        userRating: rate ? JSON.stringify( rate.rate ): "0",
         rating: rating,
-        ratingLocked: ratingLocked,
+        userCanRate: userCanRate,
         album: album[0].name,
         playToken: playToken,
         expiryTimeStamp: expiryTimeStamp,

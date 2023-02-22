@@ -5,10 +5,12 @@
     import { afterUpdate } from "svelte";
     import { tweened } from "svelte/motion";
     import { cubicInOut } from "svelte/easing";
+    import { FrontEndUser } from "$lib/js/userStore";
     /**
-     * @type {{authenticated: boolean; firstName: string | null; lastName: string | null;}}
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
      */
-    let user = $page.data.user
+    let user
+    FrontEndUser.subscribe((value) =>  { user = value })
      /**
      * @type {number}
      */
