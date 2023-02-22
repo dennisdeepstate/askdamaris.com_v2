@@ -142,6 +142,19 @@
         registerReplies = message.replies
    }
 
+   function resetForms(){
+        loginEmail = ""
+        loginPassword = ""
+        changePasswordEmail = ""
+        newPassword = ""
+        verificationCode = ""
+        verificationCodeForEmail = ""
+        registerEmail = ""
+        firstName = ""
+        lastName = ""
+        registerPassword = ""
+   }
+
    async function login(){
         loginReplies = []
         let form = {
@@ -166,6 +179,7 @@
         if(verified) {
             let frontEndUser = message.payload
             loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
+            resetForms()
         }
    }
 
@@ -215,6 +229,7 @@
         if(passwordChanged) {
             let frontEndUser = message.payload
             loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
+            resetForms()
         }
     }
 
@@ -247,6 +262,7 @@
         if(emailVerified) {
             let frontEndUser = message.payload
             loginFrontEndUser(frontEndUser.email, frontEndUser.firstName, frontEndUser.lastName)
+            resetForms()
         }
     }
 
