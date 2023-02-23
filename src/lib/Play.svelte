@@ -117,7 +117,8 @@
         box-sizing: border-box;
         color: var(--color_white);
         height: 135px;
-        padding: 4px;
+        line-height: 120px;
+        padding: 0;
         position: absolute;
         text-align: center;
         width: 240px;
@@ -185,12 +186,12 @@
     }
     .sibling_video_container > .thumb.playing::after{
         height: 108px;
+        line-height: 100px;
         width: 192px;
     }
     .sibling_video_container > .description.free::before{
         font-size: 12px;
         height: 12px;
-        width: 20px;
     }
 }
 @media only screen and (max-width: 700px){

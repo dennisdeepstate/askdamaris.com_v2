@@ -177,7 +177,7 @@
         }
     }
     async function scrollToBottomOfChat(){
-        await new Promise((resolve, reject) => { resolve("") })
+        await new Promise((resolve, reject) => { resolve(setTimeout(() => {}, 200)) })
         if(mssgBox)mssgBox.scroll({ top: mssgBox.scrollHeight, behavior: 'smooth' })
     }
     /**
