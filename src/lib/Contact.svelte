@@ -191,13 +191,14 @@
         part.push({title: 'email', selection: user.email})
         part.push({title: 'name', selection: `${user.firstName} ${user.lastName}`})
         firstMessage.mssg = `Hi ${user.firstName} what service are you interested in today?`
+        currentMode = firstMessage
         if(chatMessages.length > 0) chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
         scrollToBottomOfChat()
         return part
     }
     function userHasLoggedOut(){
-        currentMode = firstMessage
         firstMessage.mssg = `Hi there, What service are you interested in today?`
+        currentMode = firstMessage
         if(chatMessages.length > 0) chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
         scrollToBottomOfChat()
         return []

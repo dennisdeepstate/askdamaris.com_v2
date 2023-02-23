@@ -1,9 +1,15 @@
 <script>
-    import { PUBLIC_HOST } from "$env/static/public";
+    import { PUBLIC_HOST } from "$env/static/public"
     import Button from "$lib/Button.svelte"
     import { showModal } from "$lib/js/showModal"
-    import { validateInput } from "$lib/js/validateInput";
+    import { validateInput } from "$lib/js/validateInput"
+    import { FrontEndUser } from "$lib/js/userStore"
 
+    /**
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
+     */
+     let user
+    FrontEndUser.subscribe((value) =>  { user = value })
     /**
      * @type {string}
      */
@@ -17,10 +23,6 @@
      */
     export let price
     /**
-     * @type {boolean}
-     */
-    export let buyLocked
-    /**
      * @type {string}
      */
     let phone
@@ -30,7 +32,7 @@
     let reply
     async function handleSubmit(){
         reply = undefined
-        if(buyLocked){
+        if(!user.email || !user.firstName || !user.lastName) {
             showModal()
             return
         }
@@ -53,7 +55,7 @@
                 }
             }
         )
-
+        
         reply = await pushMpesa.json()
     }
 </script>

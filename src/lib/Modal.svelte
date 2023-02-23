@@ -3,8 +3,8 @@
     import Button from "$lib/Button.svelte"
     import { Modal } from "$lib/js/modalStore"
     import { hideModal } from "$lib/js/showModal"
-    import { loginFrontEndUser, logoutFrontEndUser } from "./js/loginUser"
-    import { FrontEndUser } from "./js/userStore"
+    import { loginFrontEndUser, logoutFrontEndUser } from "$lib/js/loginUser"
+    import { FrontEndUser } from "$lib/js/userStore"
 
    /**
      * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
@@ -153,6 +153,14 @@
         firstName = ""
         lastName = ""
         registerPassword = ""
+        loginSuccess = false
+        loginReplies = []
+        verifyEmailReplies = []
+        registerSuccess = false
+        registerReplies = []
+        verificationSent = false
+        verificationReplies = []
+        showChangePassword = false
    }
 
    async function login(){
@@ -276,14 +284,6 @@
    }
    async function logoutUser(){
         await logoutFrontEndUser()
-        loginSuccess = false
-        loginReplies = []
-        verifyEmailReplies = []
-        registerSuccess = false
-        registerReplies = []
-        verificationSent = false
-        verificationReplies = []
-        showChangePassword = false
    }
 </script>
 <style>

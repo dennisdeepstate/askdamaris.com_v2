@@ -1,6 +1,13 @@
 <script>
-    import { PUBLIC_HOST } from "$env/static/public";
-    import { showModal } from "$lib/js/showModal";
+    import { PUBLIC_HOST } from "$env/static/public"
+    import { showModal } from "$lib/js/showModal"
+    import { FrontEndUser } from "$lib/js/userStore"
+
+    /**
+     * @type {{email: string | undefined; firstName: string | undefined; lastName: string | undefined;}}
+     */
+    let user
+    FrontEndUser.subscribe((value) =>  { user = value })
     /**
      * @type { string }
      */
@@ -22,10 +29,6 @@
      */
     export let rating
     /**
-     * @type {boolean}
-     */
-    export let userCanRate
-    /**
      * @type {string}
      */
     export let albumName
@@ -41,17 +44,21 @@
      * @param {string} link
      */
     function goToVideo(link){
+        if(!user.email || !user.firstName || !user.lastName) {
+            showModal()
+            return
+        }
         window.location.href = link
     }
     /**
      * @param {number} rate
      */
     async function handleRadioClick(rate){
-        if(!userCanRate) {
+        if(!user.email || !user.firstName || !user.lastName) {
             showModal()
             return
         }
-        await fetch(`${PUBLIC_HOST}/user/rate`,
+        const newRating = await fetch(`${PUBLIC_HOST}/user/rate`,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -63,6 +70,7 @@
                 }
             }
         )
+        rating = await newRating.json()
     }
 </script>
 <style>
@@ -111,6 +119,7 @@
         height: 135px;
         padding: 4px;
         position: absolute;
+        text-align: center;
         width: 240px;
     }
     .sibling_video_container > .description.free::before{
@@ -123,16 +132,13 @@
         position: absolute;
         text-align: center;
         bottom: 0;
-        width: 30px;
+        width: 100%;
     }
     .sibling_video_container > .description {
         padding: 12px;
     }
     h3{
         margin: 10px 0 20px 0;
-    }
-    h4{
-        margin: 4px 0;
     }
     a:hover{
         text-decoration: underline;
@@ -230,14 +236,14 @@
                 <label for="rate-1" class="icofont-heart"></label>
             </div>
         </div>
-        <h4>{rating} / 5</h4>
+        <h5>{rating} / 5</h5>
         <div class="sibling_videos">
             {#each relatedVideos as relatedVideo, i}
                 <div class="sibling_video_container" on:click={()=>goToVideo(`${PUBLIC_HOST}/videos/play/${relatedVideo.bunny_id}`)} on:keydown={()=>goToVideo(`${PUBLIC_HOST}/videos/play/${relatedVideo.bunny_id}`)}>
                     <div class="thumb {bunnyId === relatedVideo.bunny_id ? "playing" : ""}" style="background-image: url({relatedVideo.thumb});"></div>
                     <div class="description {relatedVideo.premium ? "" : "free"}">
                         <h5>episode {i + 1}</h5>
-                        <a href="{PUBLIC_HOST}/videos/play/{relatedVideo.bunny_id}">{relatedVideo.title}</a>
+                        <a href="{PUBLIC_HOST}/videos/play/{relatedVideo.bunny_id}" on:click|preventDefault={()=>goToVideo(`${PUBLIC_HOST}/videos/play/${relatedVideo.bunny_id}`)}>{relatedVideo.title}</a>
                     </div>
                 </div>
             {/each}
