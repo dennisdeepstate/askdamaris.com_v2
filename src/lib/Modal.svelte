@@ -403,7 +403,7 @@
         <div class="options">
             <a on:click|preventDefault={()=>switchView("change_password")} href="/">forgot password?</a>
             <br />
-            <a on:click|preventDefault={()=>switchView("register")} href="/"> Register instead?</a>
+            <a on:click|preventDefault={()=>switchView("register")} href="/"> Register instead &#x2192;</a>
         </div>
         {#if loginReplies.length > 0 && !loginSuccess}
             <div class="reply error">
@@ -445,7 +445,7 @@
             <Button title="verify" style="cta" />
         </form>
         <div class="options">
-            <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+            <a on:click|preventDefault={()=>switchView("login")} href="/">&#x2190; Login instead</a>
             <br />
             <a on:click|preventDefault={()=>switchView("change_password")} href="/">forgot password?</a>    
         </div>
@@ -487,9 +487,9 @@
             <Button title="change password" style="cta" />
         </form>
         <div class="options">
-            <a on:click|preventDefault={()=>switchView("login")} href="/"> Login instead?</a>
+            <a on:click|preventDefault={()=>switchView("login")} href="/">&#x2190; Login instead</a>
             <br />
-            <a on:click|preventDefault={()=>switchView("register")} href="/">Register instead?</a>
+            <a on:click|preventDefault={()=>switchView("register")} href="/">Register instead &#x2192;</a>
         </div>
         {#if verificationReplies.length > 0 && !verificationSent}
             <div class="reply error">

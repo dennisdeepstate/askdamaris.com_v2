@@ -93,11 +93,22 @@
         box-sizing: border-box;
         color: var(--color_white);
         cursor: pointer;
-        height: 30px;
-        line-height: 30px;
-        padding: 0;
+        height: 35px;
+        line-height: 35px;
+        min-width: 35px;
+        padding: 0 8px;
         text-align: center;
-        width: 30px;
+    }
+    .profile.login_button{
+        background-color: var(--color_purple_secondary);
+        border: 1px solid var(--color_purple_main);
+        border-radius: var(--border_radius_secondary);
+        color: var(--color_purple_main);
+        max-width: 120px;
+    }
+    .profile.login_button:hover{
+        border: 1px solid var(--color_purple_main);
+        text-decoration: line-through;
     }
 @media only screen and (max-width: 900px){
     ul > li{
@@ -160,6 +171,6 @@
                 {/if}
             </ul>
         </div>
-        <div class="profile" on:click={handleProfileClick} on:keydown={handleProfileClick}>{user.firstName ? user.firstName.charAt(0).toUpperCase() : "?"}</div>
+        <div class="profile {windowWidth <= 600 || !user.firstName ? "login_button" : ""}" on:click={handleProfileClick} on:keydown={handleProfileClick}>{windowWidth <= 600 ?  "menu" : (user.firstName ? user.firstName.charAt(0).toUpperCase() :"login / register")}</div>
     </div>
 </nav>

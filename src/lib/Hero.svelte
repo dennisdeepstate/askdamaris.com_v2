@@ -1,9 +1,8 @@
 <script>
     import Button from "$lib/Button.svelte"
     import VideoRoll from "$lib/VideoRoll.svelte"
-    import { showModal } from "$lib/js/showModal"
-    import { FrontEndUser } from "$lib/js/userStore";
-    import { PUBLIC_HOST } from "$env/static/public";
+    import { FrontEndUser } from "$lib/js/userStore"
+    import { PUBLIC_HOST } from "$env/static/public"
     /**
      * @type {{ videos: []; name: string; price: number; }}
      */
@@ -19,10 +18,6 @@
          */
         let freeVideos = []
         freeVideos = album.videos.filter(/**@param {{premium: boolean;}} video*/ video => !video.premium)
-        if(!user.email || !user.firstName || !user.lastName){
-            showModal()
-            return
-        }
         window.location.href = freeVideos.length > 0 ? `${PUBLIC_HOST}/videos/play/${freeVideos[0].bunny_id}` : `${PUBLIC_HOST}/videos/`
     }
 </script>
@@ -89,7 +84,7 @@
 }
 @media only screen and (max-width: 600px){
     #hero{
-        padding: 60px 15% 0 15%;
+        padding: 60px 5% 0 5%;
     }
     .roll{
         margin: 0;
