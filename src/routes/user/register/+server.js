@@ -40,7 +40,7 @@ export async function POST({ request }) {
     let mailOptions = {
         from: ZOHO_USER,
         to: user.email,
-        subject: `ASKDAMARIS.COM VERIFICATION CODE`,
+        subject: `[askdamaris.com] email verification`,
         text: `your verification code is ${code}. It will expire in 30 minutes`,
         html: writeEmail("Verify your email address", "a verification code for your askdamaris.com account", "You have successfully created an account with askdamaris.com . Use the verification code to verify your account. Please note that this code expires after 30 minutes. If you did not request for this, safely ignore this email", code)
     }
