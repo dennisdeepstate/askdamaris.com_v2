@@ -58,7 +58,7 @@
     .about_card, .gradient_border{
         border-radius: var(--border_radius);
         min-height: 200px;
-        min-width: 300px;
+        min-width: 240px;
         max-width: 840px;
         width: 100%;
     }
@@ -112,7 +112,7 @@
 </style>
 <svelte:window bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <section id="about" bind:this={about}>
-    <h2>Ka-something small about us</h2>
+    <h2>ka-something small about us</h2>
     {#each aboutCards as card, i}
     <div class="gradient_border">
         <div class="about_card">

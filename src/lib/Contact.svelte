@@ -280,9 +280,8 @@
         height: 480px;
         margin: 0 auto 40px auto;
         max-width: 840px;
-        min-width: 300px;
+        min-width: 240px;
         padding: 20px 0;
-
     }
     .chatbox > form >input[type="text"]{
         border: none;

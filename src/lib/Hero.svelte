@@ -27,71 +27,86 @@
     }
 </script>
 <style>
-    /* .background_photo{
-        position: absolute;
-        z-index: -1;
-    }
-    .background_photo > img{
-        border: 4px solid var(--color_white);
-        border-radius: var(--border_radius);
-        margin: 0 -10px -40px 0;
-        height: 240px;
-        object-fit: cover;
-        overflow: hidden;
-        width: 240px;
-    } */
     #hero{
-        align-items: flex-end;
         box-sizing: border-box;
         display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
         height: 100vh;
-        justify-items: center;
-        margin-top: 80px;
-        max-height: 720px;
+        margin: 0 auto;
+        max-height: 900px;
         min-height: 540px;
+        padding: 180px 15% 0 15%;
         overflow: hidden;
+    }
+    .hero_paragraph, .hero_title{
+        margin: 0;
+        padding: 4px;
+        position: relative;
+    }
+    .bubble{
+        background: linear-gradient(90deg, var(--color_purple_secondary) 0%, var(--color_orange_lite) 100%);
+        height: 240px;
+        position: absolute;
+        width: 240px;
+        z-index: -1;
+    }
+    .bubble.a{
+        border-radius: 50% 50% 0 50%;
+        right: 0;
+    }
+    .bubble.d{
+        border-radius: 0 50% 50% 0;
+        left: 0;
+    }
+    .roll{
+        margin: -240px 0 0 0;
         text-align: center;
         width: 100%;
     }
-    .hero_text{
-        box-sizing: border-box;
-        margin: 0 auto;
-        position: relative;
-        width: 75%;
-    }
-    .hero_text > p{
-        font-size: 20px;
-    }
-    .roll{
-        margin: 40px 0 0 0;
-        width: 100%;
-    }
 @media only screen and (max-width: 1440px){
-    .hero_text > p{
-        font-size: 18px;
-    }
+   
 }
 @media only screen and (max-width: 900px){
-    .hero_text > p{
-        font-size: 16px;
+    #hero{
+        align-items: start;
+        gap: 0px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 3fr;
+        max-height: 600px;
+        padding: 180px 15% 0 15%;
+    }
+    .hero_paragraph > p{
+        font-size: 14px;
+    }
+    .bubble{
+        height: 120px;
+        width: 120px;
+    }
+    .roll{
+        margin: -48px 0 0 0;
     }
 }
 @media only screen and (max-width: 600px){
-    .hero_text{
-        width: 100%;
+    #hero{
+        padding: 60px 15% 0 15%;
+    }
+    .roll{
+        margin: 0;
     }
 }
 </style>
 <section id="hero">
-    <div class="hero_text">
-        <!-- <div class="background_photo" style="left: -120px; top: -36px; transform: rotateZ(5deg)"><img src="workshop.jpg" alt="p" /></div>
-        <div class="background_photo" style="right: -180px; top: 90px; transform: rotateZ(-6deg)"><img src="sessions.jpg" alt="p" /></div>
-        <div class="background_photo" style="left: -180px; top: 120px; transform: rotateZ(-2deg)"><img src="sessions.jpg" alt="p" /></div> -->
-        <h2>reach your full potential</h2>
-        <p>Welcome to ask damaris, a platform  designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
+    <div class="hero_title">
+        <div class="bubble a"></div>
+        <h1>reach your full potential</h1>
+    </div>
+    <div class="hero_paragraph">
+        <div class="bubble d"></div>
+        <p>Welcome to ask damaris, a platform designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
         <Button style="cta" title="learn and grow" on:modal={handleCTA}/>
     </div>
-    <div class="roll">
-        <VideoRoll videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>
-    </div>
 </section>
+<div class="roll">
+    <VideoRoll videos={album.videos} albumName={ album.name } albumPrice={ album.price }/>
+</div>
