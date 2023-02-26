@@ -128,7 +128,7 @@
         text-align: center;
         left: 0;
         top: 0;
-        width: 300px;
+        width: 240px;
     }
     ul > li{
         display: block;
@@ -146,7 +146,7 @@
         cursor: pointer;
         font-style: normal;
         font-size: 24px;
-        padding: 11px 12px;
+        padding: 11px 11px;
         position: absolute;
         left: 0;
         text-align: left;
@@ -166,7 +166,7 @@
                 <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""} on:click={toggleNav}>contact</a></li>
                 <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""} on:click={toggleNav}>videos</a></li>
                 {#if showSideNav}
-                    <li><a href=" " on:click|preventDefault={showModal}>profile</a></li>
+                    <li><a href=" " on:click|preventDefault={showModal}>{!user.firstName ? "login / register" : "profile" }</a></li>
                     <i on:click={toggleNav} on:keydown={toggleNav}>&#x2190;</i>
                 {/if}
             </ul>
