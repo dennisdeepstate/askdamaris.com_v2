@@ -174,7 +174,7 @@
         cursor: pointer;
         font-size: 24px;   
     }
-    .rate > input:not(:checked) ~ label:hover ~ label, .rate > label:hover{
+    .rate.allow_rate > input:not(:checked) ~ label:hover ~ label, .rate.allow_rate > label:hover{
         color: var(--color_purple_main);
     }
     .rate.allow_rate > input:checked ~ label{
