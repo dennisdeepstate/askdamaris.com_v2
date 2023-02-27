@@ -27,9 +27,9 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        height: 100vh;
+        height: 70vh;
         margin: 0 auto;
-        max-height: 900px;
+        max-height: 624px;
         min-height: 540px;
         padding: 180px 15% 0 15%;
         overflow: hidden;
@@ -55,21 +55,17 @@
         left: 0;
     }
     .roll{
-        margin: -240px 0 0 0;
+        margin: 0;
         text-align: center;
         width: 100%;
     }
-@media only screen and (max-width: 1440px){
-   
-}
 @media only screen and (max-width: 900px){
     #hero{
         align-items: start;
         gap: 0px;
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 3fr;
-        max-height: 600px;
-        padding: 180px 15% 0 15%;
+        padding: 120px 5% 0 5%;
     }
     .hero_paragraph > p{
         font-size: 14px;
@@ -78,16 +74,11 @@
         height: 120px;
         width: 120px;
     }
-    .roll{
-        margin: -48px 0 0 0;
-    }
 }
 @media only screen and (max-width: 600px){
     #hero{
-        padding: 60px 5% 0 5%;
-    }
-    .roll{
-        margin: 0;
+        max-height: 720px;
+        min-height: 624px;
     }
 }
 </style>
