@@ -22,7 +22,7 @@ export async function POST({ params, request }) {
 
     const album = await albums.findOne({name: albumName})
     if(!album) return new Response(JSON.stringify('fail'),{status: 200})
-    const amountDue = NODE_ENV === "Prod" ? 1 : album.price
+    const amountDue = NODE_ENV === "Prod" ? album.price : 1
 
     if(amountDue !== amountPaid.value) return new Response(JSON.stringify('fail'),{status: 200})
 

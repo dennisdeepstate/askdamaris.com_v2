@@ -27,7 +27,7 @@
      */
     let phone
     /**
-     * @type {{ success: boolean; mssg: string; } | undefined}
+     * @type {{ success: boolean; mssg: string; payload: string | undefined} | undefined}
      */
     let reply
     async function handleSubmit(){
@@ -39,7 +39,8 @@
         if(!validateInput("phone", phone)){
             reply = {
                 success: false,
-                mssg: "please enter a valid phone number"
+                mssg: "please enter a valid phone number",
+                payload: undefined
             }
             return
         }
@@ -57,6 +58,24 @@
         )
         
         reply = await pushMpesa.json()
+    }
+    /**
+     * @type {string}
+     */
+    let confirmationReply = ""
+    async function confirmPayment(){
+        const confirmMpesa = await fetch(`${PUBLIC_HOST}/buy/confirm_payment`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    checkoutRequestID: reply?.payload,
+                }),
+                headers:{
+                    'content-type': 'application/json'
+                }
+            }
+        )
+        confirmationReply = await confirmMpesa.json()
     }
 </script>
 <style>
@@ -96,7 +115,7 @@
         width: 96px;
     }
     form{
-        margin: 72px 0 0 0;
+        margin: 60px 0 0 0;
     }
     .reply{
         border-radius: var(--border_radius);
@@ -132,9 +151,17 @@
                     { reply.mssg }
                 </div>
             {/if}
-            <label for="phone">Enter your MPESA phone number:</label>
-            <input type="text" placeholder="2547xxxxxxxx or 2541xxxxxxxx" name="phone" id="phone" bind:value={phone} required/>
-            <Button style="cta" title={`pay: KES${price}`}/>
+            {#if !reply || !reply.success}
+                <label for="phone">Enter your MPESA phone number:</label>
+                <input type="text" placeholder="2547xxxxxxxx or 2541xxxxxxxx" name="phone" id="phone" bind:value={phone} required/>
+                <Button style="cta" title={`pay: KES${price}`}/>
+            {/if}
         </form>
+        {#if reply && reply.success}
+            <span>{confirmationReply}</span>
+            <form on:submit|preventDefault={confirmPayment}>
+                <Button style="cta" title="confirm payment"/>
+            </form>
+        {/if}
     </div>
 </section>

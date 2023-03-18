@@ -5,6 +5,7 @@ const messages = db.collection("Messages")
 const users = db.collection("Users")
 const sessions = db.collection("Sessions")
 const mpesa =  db.collection("Mpesa")
+const mpesaSTK =  db.collection("MpesaSTK")
 const verificationCodes = db.collection("Verification_Codes")
 
 export {
@@ -13,5 +14,6 @@ export {
     users,
     sessions,
     mpesa,
+    mpesaSTK,
     verificationCodes
 }

@@ -147,7 +147,7 @@
         position: absolute;
         text-align: center;
         bottom: 0;
-        width: 100%;
+        width: 232px;
     }
     .sibling_video_container > .description {
         padding: 12px;
