@@ -112,7 +112,7 @@
 </style>
 <svelte:window bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <section id="about" bind:this={about}>
-    <h2>ka-something small about us</h2>
+    <h2>Ka-something small about us</h2>
     {#each aboutCards as card, i}
     <div class="gradient_border">
         <div class="about_card">

@@ -7,6 +7,6 @@
 
 </script>
 <svelte:head>
-    <title>videos | askdamaris</title>
+    <title>Videos | askdamaris</title>
 </svelte:head>
 <VideoAlbum albums={ data.albums }/>

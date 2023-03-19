@@ -1,4 +1,4 @@
-import { mpesaSTK, users } from "$db/collections"
+import { albums, mpesaSTK, users } from "$db/collections"
 import { SAF_PASSCODE, SAF_SHORTCODE, SAF_STK_QUERY_ENDPOINT } from "$env/static/private"
 import { getAccessToken } from "$lib/js/getSafAccessToken"
 
@@ -35,11 +35,13 @@ export async function POST({ request }) {
 
     }
     const albumPurchase = await mpesaSTK.findOne({ checkoutRequestID: checkoutRequestID })
-    if(!albumPurchase) return new Response(JSON.stringify("payment not found, please try again"),{status: 403})
+    if(!albumPurchase) return new Response(JSON.stringify({mssg: "payment not found, please try again", payload: undefined}),{status: 403})
     const accessToken = await getAccessToken()
-    if(!accessToken) return new Response(JSON.stringify("payment not found, please try again"),{status: 403})
+    if(!accessToken) return new Response(JSON.stringify({mssg: "payment not found, please try again", payload: undefined}),{status: 403})
     const confirmation = await confirmMpesa(accessToken, checkoutRequestID)
-    if(confirmation.ResultCode !== "0") return new Response(JSON.stringify("payment failed"),{status: 403})
+    if(confirmation.ResultCode !== "0") return new Response(JSON.stringify({mssg: "payment failed", payload: undefined}),{status: 403})
     await users.updateOne({email: albumPurchase.email}, { $push: { albums: { name: albumPurchase.album } } })
-    return new Response(JSON.stringify('ok'),{status: 200})
+    const album = await albums.findOne({ name: albumPurchase.album })
+    if(!album) return new Response(JSON.stringify({mssg: "ok", payload: undefined}),{status: 200})
+    return new Response(JSON.stringify({mssg: 'ok', payload: album.videos[0].bunny_id}),{status: 200})
 }

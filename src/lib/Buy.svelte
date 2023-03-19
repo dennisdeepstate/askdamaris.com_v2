@@ -75,8 +75,9 @@
                 }
             }
         )
-        confirmationReply = await confirmMpesa.json()
-        confirmationReply === "ok" ? window.location.href = `${PUBLIC_HOST}/videos` : ()=>{}
+        let confirmation = await confirmMpesa.json()
+        confirmationReply = confirmation.mssg
+        confirmationReply === "ok" ? window.location.href = `${PUBLIC_HOST}/videos/play/${confirmation.payload}` : ()=>{}
     }
 </script>
 <style>

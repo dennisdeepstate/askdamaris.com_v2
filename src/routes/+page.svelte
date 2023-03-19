@@ -10,7 +10,7 @@
     export let data
 </script>
 <svelte:head>
-    <title>karibu | askdamaris</title>
+    <title>Karibu | askdamaris</title>
 </svelte:head>
 <Hero album={data.albums[0]}/>
 <Spacer />

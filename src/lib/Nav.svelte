@@ -161,16 +161,16 @@
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
         <div class="menu">
             <ul style="transform: translateX({$sideNavX}px);">
-                <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""} on:click={toggleNav}>home</a></li>
-                <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""} on:click={toggleNav}>about</a></li>
-                <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""} on:click={toggleNav}>contact</a></li>
-                <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""} on:click={toggleNav}>videos</a></li>
+                <li><a href="/#hero" class={$page.url.pathname === "/" && ( $page.url.hash === "" || $page.url.hash === "#hero" ) ? "active" : ""} on:click={toggleNav}>Home</a></li>
+                <li><a href="/#about" class={$page.url.hash === "#about" ? "active" : ""} on:click={toggleNav}>About</a></li>
+                <li><a href="/#contact" class={$page.url.hash === "#contact" ? "active" : ""} on:click={toggleNav}>Contact</a></li>
+                <li><a href="/videos" class={$page.url.pathname === "/videos" ? "active" : ""} on:click={toggleNav}>Videos</a></li>
                 {#if showSideNav}
-                    <li><a href=" " on:click|preventDefault={showModal}>{!user.firstName ? "login / register" : "profile" }</a></li>
+                    <li><a href=" " on:click|preventDefault={showModal}>{!user.firstName ? "Login / Register" : "Profile" }</a></li>
                     <i on:click={toggleNav} on:keydown={toggleNav}>&#x2190;</i>
                 {/if}
             </ul>
         </div>
-        <div class="profile {windowWidth <= 600 || !user.firstName ? "login_button" : ""}" on:click={handleProfileClick} on:keydown={handleProfileClick}>{windowWidth <= 600 ?  "menu" : (user.firstName ? user.firstName.charAt(0).toUpperCase() :"login / register")}</div>
+        <div class="profile {windowWidth <= 600 || !user.firstName ? "login_button" : ""}" on:click={handleProfileClick} on:keydown={handleProfileClick}>{windowWidth <= 600 ?  "Menu" : (user.firstName ? user.firstName.charAt(0).toUpperCase() :"Login / Register")}</div>
     </div>
 </nav>

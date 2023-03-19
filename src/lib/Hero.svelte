@@ -85,11 +85,11 @@
 <section id="hero">
     <div class="hero_title">
         <div class="bubble a"></div>
-        <h1>reach your full potential</h1>
+        <h1>Reach your full potential</h1>
     </div>
     <div class="hero_paragraph">
         <div class="bubble d"></div>
-        <p>Welcome to ask damaris, a platform designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
+        <p>Welcome to ask damaris, a platform designed to empower individuals to reach their full potential and assist businesses in acheiving their goals. Our services include personalized consultations, training and workshops for teams. Our expertly crafted educational sessions are based on proven techniques and we offer a wide range of options to meet your personal and professional development needs.</p>
         <Button style="cta" title="learn and grow" on:modal={handleCTA}/>
     </div>
 </section>

@@ -80,7 +80,7 @@ export async function POST({ request, locals }) {
         const stk = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}/${SAF_PASSCODE}`, accessToken)
         await mpesaSTK.insertOne({email: locals.user.email, amount: album.price, phone: transaction.phone, album: transaction.album, checkoutRequestID: stk.CheckoutRequestID})
         response.success = stk.ResponseCode === "0"
-        response.mssg = response.success ? "We have sent an STK push request to the number you provided. Enter your pin on your phone, then click on the confrim payment button below to complete your purchase. Please contact us on +254791235334 for an queries." : "An error occured please send us an email on info@askdamaris.com"
+        response.mssg = response.success ? "We have sent an STK push request to the mpesa number you provided. Enter your mpesa pin on your phone, then click on the confirm payment button below to complete your purchase." : "An error occured please send us an email on info@askdamaris.com"
         response.payload = response.success ? stk.CheckoutRequestID : undefined
     }
 

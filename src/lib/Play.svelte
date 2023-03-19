@@ -139,15 +139,16 @@
     }
     .sibling_video_container > .description.free::before{
         background: var(--color_purple_lite);
+        box-sizing: border-box;
         color: var(--color_white);
         content: "free";
-        height: 20px;
+        height: 24px;
         left: 0;
         padding: 4px;
         position: absolute;
         text-align: center;
         bottom: 0;
-        width: 232px;
+        width: 240px;
     }
     .sibling_video_container > .description {
         padding: 12px;
@@ -205,7 +206,7 @@
     }
     .sibling_video_container > .description.free::before{
         font-size: 12px;
-        height: 12px;
+        width: 192px;
     }
 }
 @media only screen and (max-width: 700px){

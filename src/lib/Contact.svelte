@@ -190,7 +190,7 @@
         part = part.filter(selection => selection.title !== 'email' && selection.title !== 'name')
         part.push({title: 'email', selection: user.email})
         part.push({title: 'name', selection: `${user.firstName} ${user.lastName}`})
-        firstMessage.mssg = `Hi ${user.firstName} what service are you interested in today?`
+        firstMessage.mssg = `Hi ${user.firstName}, what service are you interested in today?`
         currentMode = firstMessage
         if(chatMessages.length > 0) chatMessages = [...chatMessages, new Mssg (firstMessage.mssg, undefined,"bot",firstMessage.buttons)]
         scrollToBottomOfChat()
@@ -363,7 +363,7 @@
 </style>
 <svelte:window bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 <section id="contact">
-    <h2>si you slide into our diems kidogo</h2>
+    <h2>Si you slide into our diems kidogo</h2>
     <div class="chatbox">
         <div class="message_box" bind:this={mssgBox}>
             {#each chatMessages as chatMessage}
