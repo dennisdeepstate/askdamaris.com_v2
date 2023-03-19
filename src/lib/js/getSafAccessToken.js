@@ -16,8 +16,7 @@ async function getAccessToken(){
         headers: headers
     }
 
-    const authUrl = SAF_AUTH_ENDPOINT
-    const authResponse = await fetch(authUrl, options)
+    const authResponse = await fetch(SAF_AUTH_ENDPOINT, options)
     const data =  await authResponse.json()
     accessToken = data.access_token
     

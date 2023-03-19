@@ -1,5 +1,5 @@
 import { mpesaSTK, users } from "$db/collections"
-import { SAF_TILL_NUMBER, SAF_MY_PASSWORD, SAF_STK_QUERY_ENDPOINT } from "$env/static/private"
+import { SAF_PASSCODE, SAF_SHORTCODE, SAF_STK_QUERY_ENDPOINT } from "$env/static/private"
 import { getAccessToken } from "$lib/js/getSafAccessToken"
 
 /** @type {import('./../$types').RequestHandler} */
@@ -12,12 +12,11 @@ export async function POST({ request }) {
      * @param {string} checkoutRequestID
      */
     async function confirmMpesa(accessToken, checkoutRequestID){
-        const tillNumber = SAF_TILL_NUMBER 
         const timestamp = new Date().toISOString().substring(0, 19).replace(/-|T|:/g, '')
-        const password = Buffer.from(`${tillNumber}${SAF_MY_PASSWORD}${timestamp}`).toString('base64')
+        const password = Buffer.from(`${SAF_SHORTCODE}${SAF_PASSCODE}${timestamp}`).toString('base64')
 
         const requestBody = {
-            BusinessShortCode: tillNumber,
+            BusinessShortCode: SAF_SHORTCODE,
             Password: password,
             Timestamp: timestamp,
             CheckoutRequestID: checkoutRequestID
@@ -42,5 +41,5 @@ export async function POST({ request }) {
     const confirmation = await confirmMpesa(accessToken, checkoutRequestID)
     if(confirmation.ResultCode !== "0") return new Response(JSON.stringify("payment failed"),{status: 403})
     await users.updateOne({email: albumPurchase.email}, { $push: { albums: { name: albumPurchase.album } } })
-    return new Response(JSON.stringify('payment was successfully made'),{status: 200})
+    return new Response(JSON.stringify('ok'),{status: 200})
 }

@@ -76,6 +76,7 @@
             }
         )
         confirmationReply = await confirmMpesa.json()
+        confirmationReply === "ok" ? window.location.href = `${PUBLIC_HOST}/videos` : ()=>{}
     }
 </script>
 <style>
@@ -145,21 +146,29 @@
                 <li><img src={video.thumb} alt="image for :{video.title}" /><span>{video.title}</span></li>
             {/each}
         </ul>
-        <form on:submit|preventDefault={handleSubmit}>
-            {#if reply}
-                <div class="reply {reply.success ? "success" : "error"}">
-                    { reply.mssg }
-                </div>
-            {/if}
-            {#if !reply || !reply.success}
+        {#if !reply || !reply.success}
+            <form on:submit|preventDefault={handleSubmit}>
+                {#if reply}
+                    <div class="reply {reply.success ? "success" : "error"}">
+                        { reply.mssg }
+                    </div>
+                {/if}
                 <label for="phone">Enter your MPESA phone number:</label>
                 <input type="text" placeholder="2547xxxxxxxx or 2541xxxxxxxx" name="phone" id="phone" bind:value={phone} required/>
                 <Button style="cta" title={`pay: KES${price}`}/>
-            {/if}
-        </form>
+            </form>
+        {/if}
         {#if reply && reply.success}
-            <span>{confirmationReply}</span>
             <form on:submit|preventDefault={confirmPayment}>
+                {#if confirmationReply === ""}
+                    <div class="reply {reply.success ? "success" : "error"}">
+                        { reply.mssg }
+                    </div>
+                {:else}
+                    <div class="reply {confirmationReply === "ok" ? "success" : "error"}">
+                        { confirmationReply=== "ok" ? "Payment was made succesfully" : confirmationReply }
+                    </div>
+                {/if}
                 <Button style="cta" title="confirm payment"/>
             </form>
         {/if}

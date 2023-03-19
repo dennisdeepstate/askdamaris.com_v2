@@ -1,5 +1,5 @@
 import { albums, mpesa, users } from "$db/collections"
-import { NODE_ENV, SAF_MY_PASSWORD } from "$env/static/private"
+import { NODE_ENV, SAF_PASSCODE } from "$env/static/private"
 
 /** @type {import('./../$types').RequestHandler} */
 export async function POST({ params, request }) {
@@ -9,7 +9,7 @@ export async function POST({ params, request }) {
     const albumName = params.album
     const password = params.psswd
 
-    if(SAF_MY_PASSWORD !== password) return new Response(JSON.stringify('fail'),{status: 200})
+    if(SAF_PASSCODE !== password) return new Response(JSON.stringify('fail'),{status: 200})
     if(mpesaReceived.Body.stkCallBack.ResultCode !== "0") return new Response(JSON.stringify('fail'),{status: 200})
 
     const stkData = mpesaReceived.Body.stkCallBack.CallbackMetadata.Item

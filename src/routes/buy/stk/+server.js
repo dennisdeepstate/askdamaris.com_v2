@@ -1,5 +1,5 @@
 import { albums, mpesaSTK, users } from "$db/collections"
-import { NODE_ENV, SAF_COMPANY_NAME, SAF_MY_PASSWORD, SAF_STK_ENDPOINT, SAF_TILL_NUMBER } from "$env/static/private"
+import { NODE_ENV, SAF_COMPANY_NAME, SAF_PASSCODE, SAF_STK_ENDPOINT, SAF_SHORTCODE, SAF_TILL_NUMBER } from "$env/static/private"
 import { validateInput } from "$lib/js/validateInput"
 import { getAccessToken } from "$lib/js/getSafAccessToken"
 
@@ -11,24 +11,23 @@ import { getAccessToken } from "$lib/js/getSafAccessToken"
  * @param {string} accessToken
  */
 async function stkPush(phone, amount, callbackUrl, accessToken){
-    const tillNumber = SAF_TILL_NUMBER 
+
     const timestamp = new Date().toISOString().substring(0, 19).replace(/-|T|:/g, '')
-    const password = Buffer.from(`${tillNumber}${SAF_MY_PASSWORD}${timestamp}`).toString('base64')
+    const password = Buffer.from(`${SAF_SHORTCODE}${SAF_PASSCODE}${timestamp}`).toString('base64')
 
     const requestBody = {
-        BusinessShortCode: tillNumber,
+        BusinessShortCode: SAF_SHORTCODE,
         Password: password,
         Timestamp: timestamp,
         TransactionType: "CustomerBuyGoodsOnline",
         Amount: amount,
         PartyA: phone,
-        PartyB: tillNumber,
+        PartyB: SAF_TILL_NUMBER,
         PhoneNumber: phone,
         CallBackURL: callbackUrl,
         AccountReference: SAF_COMPANY_NAME,
-        TransactionDesc: "Purchase of ask damaris Videos online",
+        TransactionDesc: "Purchase of askdamaris Videos online",
     }
-
     const stkResponse = await fetch(SAF_STK_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -39,7 +38,6 @@ async function stkPush(phone, amount, callbackUrl, accessToken){
     })
 
     const stk = await stkResponse.json()
-    console.log(stk)
     return stk
 }
 
@@ -51,6 +49,7 @@ export async function POST({ request, locals }) {
         payload: undefined
     }
     const transaction = await request.json()
+    
     if(!transaction.album || !transaction.phone){
         response.mssg = "please fill out all the fields"
         return new Response(JSON.stringify(response),{status: 403})
@@ -76,11 +75,12 @@ export async function POST({ request, locals }) {
     }
 
     const accessToken = await getAccessToken()
+
     if(accessToken){
-        const stk = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}/${SAF_MY_PASSWORD}`, accessToken)
+        const stk = await stkPush(transaction.phone, NODE_ENV === "Prod" ? album.price : 1, `https://askdamaris.com/buy/rzj8dev9ccxa9453/${encodeURIComponent(locals.user.email)}/${encodeURIComponent(transaction.album)}/${SAF_PASSCODE}`, accessToken)
         await mpesaSTK.insertOne({email: locals.user.email, amount: album.price, phone: transaction.phone, album: transaction.album, checkoutRequestID: stk.CheckoutRequestID})
         response.success = stk.ResponseCode === "0"
-        response.mssg = response.success ? "We have sent an STK push request to this number. Enter your pin to complete the purchase" : "An error occured please send us an email on info@askdamaris.com"
+        response.mssg = response.success ? "We have sent an STK push request to the number you provided. Enter your pin on your phone, then click on the confrim payment button below to complete your purchase. Please contact us on +254791235334 for an queries." : "An error occured please send us an email on info@askdamaris.com"
         response.payload = response.success ? stk.CheckoutRequestID : undefined
     }
 
