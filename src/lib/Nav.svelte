@@ -104,7 +104,7 @@
         border: 1px solid var(--color_purple_main);
         border-radius: var(--border_radius_secondary);
         color: var(--color_purple_main);
-        max-width: 120px;
+        max-width: 132px;
     }
     .profile.login_button:hover{
         border: 1px solid var(--color_purple_main);
