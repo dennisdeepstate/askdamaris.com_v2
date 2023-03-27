@@ -34,6 +34,7 @@ export async function handle({ event, resolve }){
         cookies.delete('askdamaris_sess')
     }
     const response = await resolve(event)
+    response.headers.append('Access-Control-Allow-Origin', `*.askdamaris.com`)
 
     return response
 }

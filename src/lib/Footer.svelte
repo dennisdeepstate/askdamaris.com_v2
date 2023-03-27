@@ -46,11 +46,12 @@
             <ul>
                 <li><a href="mailto:info@askdamaris.com"><i class="icofont-ui-email"></i>info@askdamaris.com</a></li>
                 <li><a href="tel:+254791235334"><i class="icofont-phone"></i>+254791235334</a></li>
+                <li><a href="https://wa.me/+254791235334" target="_blank" rel="noreferrer"><i class="icofont-whatsapp"></i>+254791235334</a></li>
             </ul>
             <ul>
-                <li><a href="https://wa.me/+254791235334" target="_blank" rel="noreferrer"><i class="icofont-whatsapp"></i>+254791235334</a></li>
+                <li><a href="https://www.linkedin.com/in/damaris-kakundi-350284142" target="_blank" rel="noreferrer"><i class="icofont-linkedin"></i>Damaris Kakundi</a></li>
                 <li><a href="https://www.instagram.com/ask_damaris/" target="_blank" rel="noreferrer"><i class="icofont-instagram"></i>@ask_damaris</a></li>
-                <li><a href="https://www.youtube.com/@damariskakundi7081" target="_blank" rel="noreferrer"><i class="icofont-youtube-play"></i>@damariskakundi7081</a></li>
+                <li><a href="https://www.youtube.com/@maishachapters" target="_blank" rel="noreferrer"><i class="icofont-youtube-play"></i>@maishachapters</a></li>
             </ul>
         </div>
     </div>
