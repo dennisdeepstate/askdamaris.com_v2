@@ -44,8 +44,62 @@
         toggleNav()
     }
 
+let countDownDate = new Date("April 10, 2023 24:00:00").getTime()
+/**
+* @type {number}
+*/
+let days 
+/**
+ * @type {number}
+ */
+let hours
+/**
+ * @type {number}
+ */
+let minutes
+/**
+ * @type {number}
+ */
+let seconds
+
+// Update the countdown every second
+let x = setInterval(function() {
+  let now = new Date().getTime()
+  let distance = countDownDate - now
+
+  days = Math.floor(distance / (1000 * 60 * 60 * 24))
+  hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+  seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+  if (distance < 0) {
+    clearInterval(x)
+    days = 0
+    hours = 0
+    minutes = 0
+    seconds = 0
+  }
+}, 1000)
+
 </script>
 <style>
+    .holiday_offer{
+        background-color: var(--color_purple_main);
+        color: var(--color_white);
+        display: block;
+        height: 40px;
+        padding: 4px;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 12;
+    }
+    .holiday_offer > a{
+        color: var(--color_white);
+        cursor: pointer;
+        margin: 0;
+    }
     nav{
         align-items: center;
         background: var(--color_white_translucent);
@@ -54,7 +108,7 @@
         height: 50px;
         justify-items: center;
         position: fixed;
-        top: 0;
+        top: 48px;
         width: 100%;
         z-index: 12;
     }
@@ -156,6 +210,12 @@
 }
 </style>
 <svelte:window bind:innerWidth={windowWidth} on:resize={handleResize}/>
+<div class="holiday_offer">
+    <a href="{PUBLIC_HOST}/buy/Unlocking%20your%20potential">get unlocking your potential for only KES1500 this easter!</a>
+    <div class="counter">
+        {days ?? 0} days : {hours ?? 0} hours : {minutes ?? 0} minutes : {seconds ?? 0} seconds remaining
+    </div>
+</div>
 <nav>
     <div class="nav_container">
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>

@@ -160,7 +160,7 @@
 <svelte:window bind:innerWidth={viewWidth} on:keydown={(e) => handleKeyDown(e)} bind:scrollY={scroll} bind:innerHeight={windowHeight}/>
 
 <h3>{ albumName }</h3>
-<a href="{PUBLIC_HOST}/buy/{albumName}" class="price">available for KES {albumPrice}</a>
+<a href="{PUBLIC_HOST}/buy/{albumName}" class="price">available for <s>KES2100</s> KES{albumPrice}</a>
 <div id="video_roll" bind:this={roll}>
     <div class="roll_container">
         <div class="scroller left" on:click={rollRight} on:keydown={rollRight}>
