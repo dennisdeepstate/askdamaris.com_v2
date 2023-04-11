@@ -18,7 +18,7 @@
         height: 100vh;
         justify-items: center;
         position: fixed;
-        top: 48px;
+        top: 0;
         width: 100vw;
         z-index: 9;
     }

@@ -83,7 +83,7 @@ let x = setInterval(function() {
 
 </script>
 <style>
-    .holiday_offer{
+    /* .holiday_offer{
         background-color: var(--color_purple_main);
         color: var(--color_white);
         display: block;
@@ -99,7 +99,7 @@ let x = setInterval(function() {
         color: var(--color_white);
         cursor: pointer;
         margin: 0;
-    }
+    } */
     nav{
         align-items: center;
         background: var(--color_white_translucent);
@@ -108,7 +108,7 @@ let x = setInterval(function() {
         height: 50px;
         justify-items: center;
         position: fixed;
-        top: 48px;
+        top: 0;
         width: 100%;
         z-index: 12;
     }
@@ -210,12 +210,12 @@ let x = setInterval(function() {
 }
 </style>
 <svelte:window bind:innerWidth={windowWidth} on:resize={handleResize}/>
-<div class="holiday_offer">
+<!-- <div class="holiday_offer">
     <a href="{PUBLIC_HOST}/buy/Unlocking%20your%20potential">get unlocking your potential for only KES1500 this easter!</a>
     <div class="counter">
         {days ?? 0} days : {hours ?? 0} hours : {minutes ?? 0} minutes : {seconds ?? 0} seconds remaining
     </div>
-</div>
+</div> -->
 <nav>
     <div class="nav_container">
         <a href="/"><img src="{PUBLIC_HOST}/ad_logo.png" alt="logo" class="logo" title="learn and grow"/></a>
