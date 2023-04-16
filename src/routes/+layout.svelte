@@ -1,4 +1,5 @@
 <script>
+    import Analytics from "$lib/Analytics.svelte"
     import Modal from "$lib/Modal.svelte"
     import Nav from "$lib/Nav.svelte"
     import Banner from "$lib/Banner.svelte"
@@ -19,6 +20,7 @@
     if(data.user.email && data.user.firstName && data.user.lastName) loginFrontEndUser(data.user.email, data.user.firstName, data.user.lastName)
     
 </script>
+<Analytics />
 <Nav />
 <Banner loading={ loading } />
 <slot></slot>
